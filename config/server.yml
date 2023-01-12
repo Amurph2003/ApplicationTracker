@@ -1,0 +1,5 @@
+host: 100.73.1.36
+database: test1
+user: root1
+password: example
+port: 5432
