@@ -41,3 +41,13 @@ def exec_commit(sql, args={}):
     conn.commit()
     conn.close()
     return result
+
+def exec_commit_return(sql, args={}):
+    conn = connectToServer()
+    cur = conn.cursor()
+    cur.execute(sql, args)
+    result1 = cur.fetchone()
+    returned = result1 if result1 is not None else None
+    conn.commit()
+    conn.close()
+    return returned

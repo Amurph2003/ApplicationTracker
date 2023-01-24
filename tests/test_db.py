@@ -1,6 +1,6 @@
 import unittest
-from src.dbfunc import connectToServer, exec_get_one
-from src.dbapplying import *
+from db.dbfunc import connectToServer, exec_get_one
+from db.dbapplying import *
 
 class Tests(unittest.TestCase):
     def test_connection(self):
@@ -34,3 +34,10 @@ class Tests(unittest.TestCase):
         exepected = 3
         actual = exec_get_all('SELECT * FROM dates')
         self.assertEqual(exepected, len(actual))
+        
+    def test_loadTablesUsers(self):
+        tableConstruction()
+        loadTestData()
+        expected = 1
+        actual = exec_get_all("SELECT * FROM users")
+        self.assertEqual(expected, len(actual))
