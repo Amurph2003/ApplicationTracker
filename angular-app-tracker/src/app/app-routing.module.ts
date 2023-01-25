@@ -1,11 +1,9 @@
-import { ApplicationModule, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApplicationsComponent } from './applications/applications.component';
-import { CompaniesPageComponent } from './companies-page/companies-page.component';
+import { ApplicationsPageComponent } from './applications-page/applications-page.component';
 
 const routes: Routes = [
-  { path: 'companies', component: CompaniesPageComponent },
-  { path: 'applications', component: ApplicationsComponent },
+  { path: 'applications', component: ApplicationsPageComponent },
   // { path:}
 ];
 

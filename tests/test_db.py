@@ -11,15 +11,8 @@ class Tests(unittest.TestCase):
     def test_constructTables(self):
         tableConstruction()
         expected = []
-        actual = exec_get_all('SELECT * FROM companies, apps, dates')
+        actual = exec_get_all('SELECT * FROM apps, users, dates')
         self.assertEqual(expected, actual)
-        
-    def test_loadTablesCompanies(self):
-        tableConstruction()
-        loadTestData()
-        exepected = 3
-        actual = exec_get_all('SELECT * FROM companies')
-        self.assertEqual(exepected, len(actual))
         
     def test_loadTablesApps(self):
         tableConstruction()
