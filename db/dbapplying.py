@@ -63,3 +63,11 @@ def newApp(position, comp_name, comp_city, comp_state, comp_country, comp_notes,
         """INSERT INTO apps (position, company_name, company_info, city, state, country, resume, coverletter, github, notes, extra, extra_material, applied, in_contact, result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *""", (position, comp_name, comp_notes, comp_city, comp_state, comp_country, resume, coverletter, github, app_notes, extra, extra_material, applied, contact, result)
     )
     return newApp
+
+def getSpecificApp(id):
+    specific = exec_get_one("""SELECT * FROM apps WHERE id=%s""", (id, ))
+    return specific
+
+# def getUsersApps(UID):
+#     usersApp = exec_get_all("""SELECT * FROM apps WHERE uid=%s""", (UID,))
+#     return usersApp

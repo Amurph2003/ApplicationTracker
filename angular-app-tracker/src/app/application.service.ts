@@ -9,7 +9,7 @@ import { Observable, of } from "rxjs";
 })
 export class ApplicationService {
 
-  private applicationsURL = 'http://192.168.1.163:5001/applications'
+  private applicationsURL = 'http://localhost:5001/applications'
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'
@@ -46,6 +46,10 @@ export class ApplicationService {
       tap((deleteApp: Application) => console.log('deleting: ' + deleteApp.id + ' ' + deleteApp.position + ' ' + deleteApp.companyName)),
       catchError(this.handleError<Application>('deleteApplication'))
     )
+  }
+
+  getSingleApplication(id: number): Observable<Application> {
+    return this.http.get<Application>(`${this.applicationsURL}/${id}`);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

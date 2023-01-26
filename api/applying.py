@@ -117,3 +117,8 @@ class Applications(Resource):
         return 
     def delete(self):
         return
+    
+class SpecificApp(Resource):
+    def get(self, appID):
+        app = getSpecificApp(appID)
+        return app

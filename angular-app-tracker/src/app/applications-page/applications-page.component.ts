@@ -17,14 +17,11 @@ export class ApplicationsPageComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getApplications()
+    this.getApplications();
   }
 
   getApplications(): void {
     this.applicationService.getApplications().subscribe(appList => this.applications = appList)
   }
 
-  createApplication(): void {
-    this.applicationService
-  }
 }
