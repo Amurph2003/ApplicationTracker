@@ -78,39 +78,39 @@ class Applications(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('position', type=str)
-        parser.add_argument('company name', type=str)
+        parser.add_argument('company', type=str)
         parser.add_argument('city', type=str)
         parser.add_argument('state', type=str)
         parser.add_argument('country', type=str)
-        parser.add_argument('company notes', type=str)
+        parser.add_argument('compNotes', type=str)
         parser.add_argument('resume', type=str)
         parser.add_argument('coverletter', type=str)
         parser.add_argument('github', type=str)
-        parser.add_argument('app notes', type=str)
-        parser.add_argument('extra', type=str)
-        parser.add_argument('extra materials', type=str)
-        parser.add_argument('applied', type=str)
-        parser.add_argument('in contact', type=str)
+        parser.add_argument('appNotes', type=str)
+        parser.add_argument('extras', type=str)
+        parser.add_argument('extraMaterial', type=str)
+        parser.add_argument('submitted', type=str)
+        parser.add_argument('contact', type=str)
         parser.add_argument('result', type=str)
         args = parser.parse_args()
         
         position = args['position']
-        comp_name = args['company name']
+        comp_name = args['company']
         city = args['city']
         state = args['state']
         country = args['country']
-        comp_notes = args['company notes']
+        comp_notes = args['compNotes']
         resume = args['resume']
         coverletter = args['coverletter']
         github = args['github']
-        app_notes = args['app notes']
-        extra = args['extra']
-        extra_materials = args['extra materials']
-        applied = args['applied']
-        contact = args['in contact']
+        app_notes = args['appNotes']
+        extra = args['extras']
+        extra_materials = args['extraMaterial']
+        applied = args['submitted']
+        contact = args['contact']
         result = args['result']
         
-        data = newApplication(position, comp_name, city, state, country, comp_notes, resume, coverletter, github, app_notes, extra, extra_materials, applied, contact, result)
+        data = newApp(position, comp_name, city, state, country, comp_notes, resume, coverletter, github, app_notes, extra, extra_materials, applied, contact, result)
         return data
     
     def put(self):

@@ -8,8 +8,7 @@ def loadTestData():
 
 def listApps():
     allApps = exec_get_all("""
-        SELECT * FROM apps 
-        INNER JOIN companies ON apps.company_id=companies.id"""
+        SELECT * FROM apps"""
     )
     return allApps
 
@@ -60,10 +59,7 @@ def deleteCompany(id):
     return deleted
 
 def newApp(position, comp_name, comp_city, comp_state, comp_country, comp_notes, resume, coverletter, github, app_notes, extra, extra_material, applied, contact, result):
-    newAppComp = addCompany(comp_name, comp_city, comp_state, comp_country,comp_notes)
-    if newAppComp == None:
-        return 'Company not created'
-    comp_id = newAppComp[0]
-    print(comp_id)
-    exec_commit_return(
+    newApp = exec_commit_return(
+        """INSERT INTO apps (position, company_name, company_info, city, state, country, resume, coverletter, github, notes, extra, extra_material, applied, in_contact, result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *""", (position, comp_name, comp_notes, comp_city, comp_state, comp_country, resume, coverletter, github, app_notes, extra, extra_material, applied, contact, result)
     )
+    return newApp

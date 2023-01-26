@@ -9,7 +9,7 @@ import { Observable, of } from "rxjs";
 })
 export class ApplicationService {
 
-  private applicationsURL = 'http://localhost:5001/applications'
+  private applicationsURL = 'http://192.168.1.163:5001/applications'
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'

@@ -13,7 +13,7 @@
 <label for="state">State</label>
 <input type="text" class="newApp" id="state" #state>
 
-<label for="Country">Country</label>
+<label for="country">Country</label>
 <input type="text" class="newApp" id="country" #country>
 
 <label for="compNotes">Notes about the employer</label>
@@ -37,9 +37,14 @@
 <label for="submitted">Submitted Application</label>
 <input type="text" class="newApp" id="submitted" #submitted>
 
-<label for="pcontact">In contact with employer?</label>
+<label for="contact">In contact with employer?</label>
 <input type="text" class="newApp" id="contact" #contact>
 
 <label for="result">Result</label>
 <input type="text" class="newApp" id="result" #result>
+
+<label for="git">Rgithub requested?</label>
+<input type="text" class="newApp" id="git" #git>
+
+<button type="button" (click)="newApp(position.value, company.value, city.value, state.value, country.value, compNotes.value, resume.value, coverletter.value, git.value, appNotes.value, extras.value, extraMaterial.value, submitted.value, contact.value, result.value)">Submit</button>
 </div>
