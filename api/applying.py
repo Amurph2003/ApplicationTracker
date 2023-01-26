@@ -67,6 +67,7 @@ from db.dbapplying import *
     
 class Applications(Resource):
     def get(self):
+        
         allApps = listApps()
         apps = []
         for row in allApps:
@@ -109,7 +110,7 @@ class Applications(Resource):
         contact = args['in contact']
         result = args['result']
         
-        data = newApplication(position, comp_name, comp_city, comp_state, comp_country, comp_notes, resume, coverletter, github, app_notes, extra, extra_materials, applied, contact, result)
+        data = newApplication(position, comp_name, city, state, country, comp_notes, resume, coverletter, github, app_notes, extra, extra_materials, applied, contact, result)
         return data
     
     def put(self):

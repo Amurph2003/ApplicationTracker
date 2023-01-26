@@ -1,7 +1,13 @@
-INSERT INTO apps(position, company_name, city, state, country, company_info, resume, coverletter, github, notes, extra, extra_material, applied, in_contact, result) VALUES 
-    ('Lifeguard', 'YMCA', 'Phoenixville', 'Pennsylvania', 'United States', 'Fitness/Chilcare center', True, True, False, '', True, 'References and Clearances', True, False, 'Recieved and Accepted offer summer 2019'),
-    ('French Fryer Cook', 'Thrashers French Fries', 'Ocean City', 'Maryland', 'United States', 'Fry shop at the beach', True, False, False, 'Not ready to apply yet; deadline Jun 17; need cover letter', False, '', False, NULL, NULL),
-    ('Pizza Chef', 'Uno Pizzeria & Grill', 'Chicago', 'Illinois', 'United States', 'Pizza Place', False, False, True, 'Need to customize resume', False, '', False, NULL, NULL)
+INSERT INTO companies(name, city, state, country, info) VALUES 
+    ('YMCA', 'Phoenixville', 'Pennsylvania', 'United States', 'Head Lifeguard'),
+    ('Thrashers French Fries', 'Ocean City', 'Maryland', 'United States', 'Fryer'),
+    ('Uno Pizzeria & Grill', 'Chicago', 'Illinois', 'United States', 'Cook')
+;
+
+INSERT INTO apps(position, company_id, resume, coverletter, github, notes, extra, extra_material, applied, in_contact, result) VALUES 
+    ('Lifeguard', 1, True, True, False, '', True, 'References and Clearances', True, False, 'Recieved and Accepted offer summer 2019'),
+    ('French Fryer Cook', 2, True, False, False, 'Not ready to apply yet; deadline Jun 17; need cover letter', False, '', False, NULL, NULL),
+    ('Pizza Chef', 3, False, False, True, 'Need to customize resume', False, '', False, NULL, NULL)
 ;
 
 INSERT INTO dates(app_id, deadline, applied_on, recent, finalized) VALUES 

@@ -1,9 +1,12 @@
 <p>applications-page works!</p>
 
+<button routerLink="/applications/new">New</button>
+
 <ul>
     <li *ngFor="let app of applications">
         <!-- <h2>{{app.company}}</h2> -->
         <p>{{app.position}}</p>
         <p>{{app.companyName}}</p>
+        <p>{{app.city}}, {{app.state}}</p>
     </li>
 </ul>

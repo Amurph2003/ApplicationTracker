@@ -1,15 +1,21 @@
+DROP TABLE IF EXISTS companies;
 DROP TABLE IF EXISTS apps;
 DROP TABLE IF EXISTS dates;
 DROP TABLE IF EXISTS users;
 
+CREATE TABLE companies(
+    id              SERIAL PRIMARY KEY NOT NULL,
+    name            VARCHAR(150) NOT NULL,
+    city            VARCHAR(150) NOT NULL,
+    state           VARCHAR(150) NOT NULL,
+    country         VARCHAR(150) NOT NULL,
+    info            VARCHAR(200)
+);
+
 CREATE TABLE apps(
     id              SERIAL PRIMARY KEY NOT NULL,
     position        VARCHAR(200) NOT NULL,
-    company_name    VARCHAR(500) NOT NULL,
-    company_info    VARCHAR(500) NOT NULL,
-    city            VARCHAR(200) NOT NULL,
-    state           VARCHAR(200) NOT NULL,
-    country         VARCHAR(200) NOT NULL,
+    company_id      INTEGER NOT NULL,
     resume          BOOLEAN NOT NULL,
     coverletter     BOOLEAN NOT NULL,
     github          BOOLEAN NOT NULL,
