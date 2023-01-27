@@ -3,6 +3,10 @@ from db.dbfunc import connectToServer, exec_get_one
 from db.dbapplying import *
 
 class Tests(unittest.TestCase):
+    def setUp(self):
+        tableConstruction()
+        loadTestData()
+        
     def test_connection(self):
         connectToServer()
         result = exec_get_one('SELECT VERSION()')
@@ -15,36 +19,36 @@ class Tests(unittest.TestCase):
         self.assertEqual(expected, actual)
         
     def test_loadTablesApps(self):
-        tableConstruction()
-        loadTestData()
-        exepected = 3
-        actual = exec_get_all('SELECT * FROM apps')
+        exepected = 4
+        actual = listApplications()
         self.assertEqual(exepected, len(actual))
         
     def test_loadTablesDates(self):
-        tableConstruction()
-        loadTestData()
-        exepected = 3
-        actual = exec_get_all('SELECT * FROM dates')
+        exepected = 4
+        actual = listDates()
         self.assertEqual(exepected, len(actual))
         
     def test_loadTablesUsers(self):
-        tableConstruction()
-        loadTestData()
-        expected = 1
-        actual = exec_get_all("SELECT * FROM users")
+        expected = 2
+        actual = listUsers()
         self.assertEqual(expected, len(actual))
         
     def test_loadTablesCompanies(self):
-        tableConstruction()
-        loadTestData()
-        expected = 3
-        actual = exec_get_all("SELECT * FROM companies")
+        expected = 4
+        actual = listCompanies()
         self.assertEqual(expected, len(actual))
         
     def test_loadTablesMaterials(self):
-        tableConstruction()
-        loadTestData()
+        expected = 4
+        actual = listMaterials()
+        self.assertEqual(expected, len(actual))
+        
+    def test_listUsersEverything(self):
         expected = 3
-        actual = exec_get_all("SELECT * FROM materials")
+        actual = listUsersEverything(1)
+        self.assertEqual(expected, len(actual))
+        
+    def test_listUsersEverything(self):
+        expected = 1
+        actual = listUsersEverything(2)
         self.assertEqual(expected, len(actual))

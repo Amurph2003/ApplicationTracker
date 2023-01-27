@@ -6,68 +6,32 @@ def tableConstruction():
 def loadTestData():
     exec_sql_file('applicationtracker/tests/testdata.sql')
 
-def listApps():
-    allApps = exec_get_all("""
-        SELECT * FROM apps"""
-    )
+def listApplications():
+    allApps = exec_get_all("""SELECT * FROM apps""")
     return allApps
 
-def listCompanies(search=""):
-    if search == "":
-        allCompanies = exec_get_all(
-            """SELECT * FROM companies"""
-        )
-        return allCompanies
-    else:
-        query = '%' + search + '%'
-        searchedCompanies = exec_get_all(
-            """SELECT * FROM companies WHERE name LIKE %s""", (query)
-        )
-        return searchedCompanies
+def listCompanies():
+    allCompanies = exec_get_all("""SELECT * FROM companies""")
+    return allCompanies
 
-def addCompany(name, city, state, country, info):
-    exist = exec_get_one('SELECT * FROM companies WHERE name=%s AND city=%s AND state=%s AND country=%s AND info=%s', (name, city, state, country, info))
-    if exist != None:
-        return None
-    company = exec_commit_return('''INSERT INTO companies (name, city, state, country, info) VALUES (%s,%s,%s, %s, %s) RETURNING *''', (name, city, state, country, info))
-    return company
+def listDates():
+    allDates = exec_get_all("""SELECT * FROM dates""")
+    return allDates
 
-def editCompany(id, name='', city='', state='', country='', info=''):
-    exists = exec_get_one('SELECT * FROM companies WHERE id=%s RETURNING *', (id, ))
-    if exists == None:
-        return None
-    id = exists[0]
-    if city:
-        exec_commit('UPDATE companies SET city=%s WHERE id=%s', (city, id))
-    if state:
-        exec_commit('UPDATE companies SET state=%s WHERE id=%s', (state, id))
-    if country:
-        exec_commit('UPDATE companies SET country=%s WHERE id=%s', (country, id))
-    if info:
-        exec_commit('UPDATE companies SET info=%s WHERE id=%s', (info, id))
-    updated = exec_get_one('SELECT * FROM companies WHERE id=%s', (id,))
-    if updated == None:
-        return None
-    return updated
+def listMaterials():
+    allMaterials = exec_get_all("""SELECT * FROM materials""")
+    return allMaterials
 
-def deleteCompany(id):
-    exists = exec_get_one('SELECT * FROM companies WHERE id=%s RETURNING *', (id, ))
-    if exists == None:
-        return None
-    id = exists[0]
-    deleted = exec_commit_return('DELETE FROM companies WHERE id=%s RETURNING *', (id,))
-    return deleted
+def listUsers():
+    allUsers = exec_get_all("""SELECT * FROM users""")
+    return allUsers
 
-def newApp(position, comp_name, comp_city, comp_state, comp_country, comp_notes, resume, coverletter, github, app_notes, extra, extra_material, applied, contact, result):
-    newApp = exec_commit_return(
-        """INSERT INTO apps (position, company_name, company_info, city, state, country, resume, coverletter, github, notes, extra, extra_material, applied, in_contact, result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *""", (position, comp_name, comp_notes, comp_city, comp_state, comp_country, resume, coverletter, github, app_notes, extra, extra_material, applied, contact, result)
-    )
-    return newApp
 
-def getSpecificApp(id):
-    specific = exec_get_one("""SELECT * FROM apps WHERE id=%s""", (id, ))
-    return specific
+def listUsersEverything(uid):
+    allApplications = exec_get_all("""SELECT * FROM apps
+        INNER JOIN companies ON apps.companyID=companies.id
+        INNER JOIN materials ON materials.appID=apps.id
+        INNER JOIN dates ON dates.appID=apps.id
+        WHERE uid=%s""", (uid,))
+    return allApplications
 
-# def getUsersApps(UID):
-#     usersApp = exec_get_all("""SELECT * FROM apps WHERE uid=%s""", (UID,))
-#     return usersApp
