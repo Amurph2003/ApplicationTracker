@@ -9,7 +9,7 @@ INSERT INTO apps(position, uid, companyID, city, state, country,  applied, conta
     ('Lifeguard', 1, 1, 'Phoenixville', 'Pennsylvania', 'United States', True, False, 'Recieved and Accepted offer summer 2019'),
     ('French Fryer Cook', 1, 2, 'Ocean City', 'Maryland', 'United States', False, NULL, NULL),
     ('Pizza Chef', 1, 3, 'Chicago', 'Illinois', 'United States', False, NULL, NULL),
-    ('Swim Instructor', 2, 1, 'Phoenixville', 'Pennsylvania', 'United States', True, True, '')
+    ('Swim Instructor', 2, 4, 'Phoenixville', 'Pennsylvania', 'United States', True, True, '')
 ;
 
 INSERT INTO materials(appID, resume, coverletter, github, notes, extra, extraMATERIAL) VALUES 

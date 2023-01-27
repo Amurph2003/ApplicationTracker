@@ -35,3 +35,22 @@ def listUsersEverything(uid):
         WHERE uid=%s""", (uid,))
     return allApplications
 
+def newUser():
+    user = exec_commit_return()
+    return user
+
+def newApplication():
+    app = exec_commit_return()
+    return app
+
+def signin():
+    signin = 0
+    return signin
+
+def editApplication():
+    edited = exec_commit_return()
+    return edited
+
+def deleteApplication():
+    deleted = exec_commit_return()
+    return deleted
