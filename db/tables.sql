@@ -6,32 +6,37 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE companies(
     id              SERIAL PRIMARY KEY NOT NULL,
     name            VARCHAR(150) NOT NULL,
-    city            VARCHAR(150) NOT NULL,
-    state           VARCHAR(150) NOT NULL,
-    country         VARCHAR(150) NOT NULL,
     info            VARCHAR(200)
 );
 
 CREATE TABLE apps(
     id              SERIAL PRIMARY KEY NOT NULL,
+    uid             INTEGER NOT NULL,
     position        VARCHAR(200) NOT NULL,
     company_id      INTEGER NOT NULL,
-    resume          BOOLEAN NOT NULL,
-    coverletter     BOOLEAN NOT NULL,
-    github          BOOLEAN NOT NULL,
-    notes           VARCHAR(500),
-    extra           BOOLEAN NOT NULL,
-    extra_material  VARCHAR(200),
+    city            VARCHAR(150) NOT NULL,
+    state           VARCHAR(150) NOT NULL,
+    country         VARCHAR(150) NOT NULL,
     applied         BOOLEAN NOT NULL,
     in_contact      BOOLEAN,
     result          VARCHAR(200)
 );
 
+CREATE Table materials(
+    id              SERIAL PRIMARY KEY NOT NULL,
+    resume          BOOLEAN NOT NULL,
+    coverletter     BOOLEAN NOT NULL,
+    github          BOOLEAN NOT NULL,
+    notes           VARCHAR(500),
+    extra           BOOLEAN NOT NULL,
+    extra_material  VARCHAR(200)
+)
+
 CREATE TABLE dates(
     id              SERIAL PRIMARY KEY NOT NULL,
     app_id          INTEGER NOT NULL,
     deadline        DATE,
-    applied_on      DATE NOT NULL DEFAULT CURRENT_DATE,
+    applied_on      DATE,
     recent          DATE,
     finalized       DATE
 );
