@@ -8,13 +8,14 @@ CREATE TABLE companies(
     id              SERIAL PRIMARY KEY NOT NULL,
     name            VARCHAR(150) NOT NULL,
     info            VARCHAR(200)
+    
 );
 
 CREATE TABLE apps(
     id              SERIAL PRIMARY KEY NOT NULL,
     uid             INTEGER NOT NULL,
     position        VARCHAR(200) NOT NULL,
-    companyID      INTEGER NOT NULL,
+    companyID       INTEGER NOT NULL,
     city            VARCHAR(150) NOT NULL,
     state           VARCHAR(150) NOT NULL,
     country         VARCHAR(150) NOT NULL,
