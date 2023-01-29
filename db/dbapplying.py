@@ -6,68 +6,126 @@ def tableConstruction():
 def loadTestData():
     exec_sql_file('applicationtracker/tests/testdata.sql')
 
-def listApps():
-    allApps = exec_get_all("""
-        SELECT * FROM apps"""
-    )
+def listApplications():
+    allApps = exec_get_all("""SELECT * FROM apps""")
     return allApps
 
-def listCompanies(search=""):
-    if search == "":
-        allCompanies = exec_get_all(
-            """SELECT * FROM companies"""
-        )
-        return allCompanies
-    else:
-        query = '%' + search + '%'
-        searchedCompanies = exec_get_all(
-            """SELECT * FROM companies WHERE name LIKE %s""", (query)
-        )
-        return searchedCompanies
+def listCompanies():
+    allCompanies = exec_get_all("""SELECT * FROM companies""")
+    return allCompanies
 
-def addCompany(name, city, state, country, info):
-    exist = exec_get_one('SELECT * FROM companies WHERE name=%s AND city=%s AND state=%s AND country=%s AND info=%s', (name, city, state, country, info))
-    if exist != None:
-        return None
-    company = exec_commit_return('''INSERT INTO companies (name, city, state, country, info) VALUES (%s,%s,%s, %s, %s) RETURNING *''', (name, city, state, country, info))
+def listDates():
+    allDates = exec_get_all("""SELECT * FROM dates""")
+    return allDates
+
+def listMaterials():
+    allMaterials = exec_get_all("""SELECT * FROM materials""")
+    return allMaterials
+
+def listUsers():
+    allUsers = exec_get_all("""SELECT * FROM users""")
+    return allUsers
+
+
+def listUsersEverything(uid):
+    allApplications = exec_get_all("""SELECT * FROM apps
+        INNER JOIN companies ON apps.companyID=companies.id
+        INNER JOIN materials ON materials.appID=apps.id
+        INNER JOIN dates ON dates.appID=apps.id
+        WHERE uid=%s""", (uid,))
+    return allApplications
+
+def getCompany(companyID):
+    company = exec_get_one('SELECT * FROM companies WHERE id=%s', (companyID,))
     return company
 
-def editCompany(id, name='', city='', state='', country='', info=''):
-    exists = exec_get_one('SELECT * FROM companies WHERE id=%s RETURNING *', (id, ))
-    if exists == None:
-        return None
-    id = exists[0]
-    if city:
-        exec_commit('UPDATE companies SET city=%s WHERE id=%s', (city, id))
-    if state:
-        exec_commit('UPDATE companies SET state=%s WHERE id=%s', (state, id))
-    if country:
-        exec_commit('UPDATE companies SET country=%s WHERE id=%s', (country, id))
-    if info:
-        exec_commit('UPDATE companies SET info=%s WHERE id=%s', (info, id))
-    updated = exec_get_one('SELECT * FROM companies WHERE id=%s', (id,))
-    if updated == None:
-        return None
-    return updated
+def getMaterial(appID):
+    materials = exec_get_one("SELECT * FROM materials WHERE appID=%s", (appID,))
+    return materials
 
-def deleteCompany(id):
-    exists = exec_get_one('SELECT * FROM companies WHERE id=%s RETURNING *', (id, ))
+def getApp(id):
+    app = exec_get_one("SELECT * FROM apps WHERE id=%s", (id,))
+    return app
+
+def getDate(appID):
+    dates = exec_get_one("SELECT * FROM dates WHERE appID=%s", (appID,))
+    return dates
+
+def getApplication(appID):
+    application = exec_get_all('''
+        SELECT apps.id, uid, position, companies.Name, companies.Info, city, state, country, materials.resume, materials.coverletter, materials.github, materials.notes, materials.extra, materials.extraMATERIAL, apps.applied, contact, result, dates.deadline, dates.applied, dates.recent, dates.finalized FROM apps 
+        INNER JOIN companies ON apps.companyID=companies.id
+        INNER JOIN materials ON materials.appID=apps.id
+        INNER JOIN dates ON dates.appID=apps.id
+        WHERE apps.id=%s''', (appID,))[0]
+    return application
+
+def newUser(name, username, email, password, date, age):
+    exists = exec_get_one('SELECT username, email FROM users WHERE email=%s OR username=%s', (email, username))
+    if exists != None:
+        return exists
+    user = exec_commit_return('''INSERT INTO users (username, hashedpw, name, email, datejoined, age) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *''', (username, password, name, email, date, age))
+    return user
+
+def newCompany(name, info):
+    exists = exec_get_one("SELECT * FROM companies WHERE name=%s AND info=%s", (name, info))
+    if exists != None:
+        return exists
+    company = exec_commit_return('INSERT INTO companies (name, info) VALUES (%s, %s) RETURNING *', (name, info))
+    return company
+
+def newApp(uid, position, company, city, state, country, applied, contact, result):
+    app = exec_commit_return('INSERT INTO apps (uid, position, companyID, city, state, country, applied, contact, result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *', (uid, position, company, city, state, country, applied, contact, result))
+    return app
+
+def newMaterials(appID, resume, cv, git, notes, extra, eMaterials):
+    materials = exec_commit_return('INSERT INTO materials (appID, resume, coverletter, github, notes, extra, extraMATERIAL) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING *', (appID, resume, cv, git, notes, extra,eMaterials))
+    return materials
+
+def newDates(appID, deadline, applied, recent, finalized):
+    dates = exec_commit_return('INSERT INTO dates (appID, deadline, applied, recent, finalized) VALUES (%s, %s, %s, %s, %s) RETURNING *', (appID, deadline, applied, recent, finalized))
+    return dates
+
+def newApplication(uid, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+    company = newCompany(companyName, companyInfo)
+    companyID = company[0]
+    application = newApp(uid, position, companyID, city, state, country, applied, contact, result)
+    applicationID = application[0]
+    material = newMaterials(applicationID, resume, cv, git, notes, extra, materials)
+    dates = newDates(applicationID, deadline, appliedOn, recentContact, finalized)
+    app = getApplication(applicationID)
+    return app
+
+def signin(username, password):
+    exists = exec_get_one("SELECT * FROM users WHERE username=%s", (username,))
     if exists == None:
-        return None
-    id = exists[0]
-    deleted = exec_commit_return('DELETE FROM companies WHERE id=%s RETURNING *', (id,))
+        return 'Username not found'
+    gottenPW = exists[3]
+    if gottenPW == password:
+        return 'Login Successful'
+    return "Login Unsuccessful"
+
+def editApplication(id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+    companyID = exec_get_one("SELECT companyID FROM apps WHERE id=%s", (id,))
+    companyO = getCompany(companyID)
+    # print("companies: ", companyO)
+    if (companyO[1] != companyName) or (companyO[2] != companyInfo):
+        print("Updated companies: ", exec_commit_return("UPDATE companies SET name=%s, info=%s WHERE id=%s RETURNING *", (companyName, companyInfo, companyID)))
+    appO = getApp(id)
+    # print('apps: ', appO)
+    if (appO[2] != position) or (appO[4] != city) or (appO[5] != state) or (appO[6] != country) or (appO[7] != applied) or (appO[8] != contact) or (appO[9] != result):
+        print("Updated apps: ", exec_commit_return("UPDATE apps SET position=%s, city=%s, state=%s, country=%s, applied=%s, contact=%s, result=%s WHERE id=%s RETURNING *", (position, city, state, country, applied, contact, result, id)))
+    materialO = getMaterial(id)
+    # print('material0', materialO)
+    if (materialO[2] != resume) or (materialO[3] != cv) or (materialO[4] != git) or (materialO[5] != notes) or (materialO[6] != extra) or (materialO[7] != materials):
+        print("Updated materials: ", exec_commit_return("UPDATE materials SET resume=%s, coverletter=%s, github=%s, notes=%s, extra=%s, extraMATERIAL=%s WHERE id=%s AND appID=%s RETURNING *", (resume, cv, git, notes, extra, materials, id, id)))
+    datesO = getDate(id)
+    # print('date:', datesO)
+    if (datesO[2] != deadline) or (datesO[3] != applied) or (datesO[4] != recentContact) or (datesO[5] != finalized): 
+        print("Updated dates: ", exec_commit_return("UPDATE dates SET deadline=%s, applied=%s, recent=%s, finalized=%s WHERE id=%s AND appID=%s RETURNING *", (deadline, appliedOn, recentContact, finalized, id, id)))
+    edited = getApplication(id)
+    return edited
+
+def deleteApplication():
+    deleted = exec_commit_return()
     return deleted
-
-def newApp(position, comp_name, comp_city, comp_state, comp_country, comp_notes, resume, coverletter, github, app_notes, extra, extra_material, applied, contact, result):
-    newApp = exec_commit_return(
-        """INSERT INTO apps (position, company_name, company_info, city, state, country, resume, coverletter, github, notes, extra, extra_material, applied, in_contact, result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *""", (position, comp_name, comp_notes, comp_city, comp_state, comp_country, resume, coverletter, github, app_notes, extra, extra_material, applied, contact, result)
-    )
-    return newApp
-
-def getSpecificApp(id):
-    specific = exec_get_one("""SELECT * FROM apps WHERE id=%s""", (id, ))
-    return specific
-
-# def getUsersApps(UID):
-#     usersApp = exec_get_all("""SELECT * FROM apps WHERE uid=%s""", (UID,))
-#     return usersApp
