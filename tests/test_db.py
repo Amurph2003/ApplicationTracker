@@ -79,4 +79,27 @@ class Tests(unittest.TestCase):
         actual = signin('Test123', '321')
         self.assertEqual(expected, actual)
     
-    
+    def test_getCompany(self):
+        expected = (2, 'Thrashers French Fries', 'Fryer')
+        actual = getCompany(2)
+        self.assertEqual(expected, actual)
+        
+    def test_getApp(self):
+        expected = (4, 2, 'Swim Instructor', 4, 'Phoenixville', 'Pennsylvania', 'United States', True, True, '')
+        actual = getApp(4)
+        self.assertEqual(expected, actual)
+        
+    def test_getMaterial(self):
+        expected = (3, 3, False, False, True, 'Need to customize resume', False, '')
+        actual = getMaterial(3)
+        self.assertEqual(expected, actual)
+        
+    def test_getDate(self):
+        expected = (1, 1, datetime.date(2023, 1, 31), datetime.date(2022, 12, 23), datetime.date(2022, 12, 30), datetime.date(2023, 1, 2))
+        actual = getDate(1)
+        self.assertEqual(expected, actual)
+        
+    def test_editApplication(self):
+        expected = (3, 1, 'Pizza Chef and DishWasher', 'Uno Pizzeria & Grill', '', 'Rochester', 'New York', 'United States', False, False, True, 'Need to customize resume', False, '', False, None, None, datetime.date(2022, 12, 24), datetime.date(2023, 1, 12), None, None)
+        actual = editApplication(3, 'Pizza Chef and DishWasher', 'Uno Pizzeria & Grill', '', 'Rochester', 'New York', 'United States', False, False, True, 'Need to customize resume', False, '', False, None, None, datetime.date(2022, 12, 24), datetime.date(2023, 1, 12), None, None)
+        self.assertEqual(expected, actual)

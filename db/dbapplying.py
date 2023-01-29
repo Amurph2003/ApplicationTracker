@@ -35,6 +35,22 @@ def listUsersEverything(uid):
         WHERE uid=%s""", (uid,))
     return allApplications
 
+def getCompany(companyID):
+    company = exec_get_one('SELECT * FROM companies WHERE id=%s', (companyID,))
+    return company
+
+def getMaterial(appID):
+    materials = exec_get_one("SELECT * FROM materials WHERE appID=%s", (appID,))
+    return materials
+
+def getApp(id):
+    app = exec_get_one("SELECT * FROM apps WHERE id=%s", (id,))
+    return app
+
+def getDate(appID):
+    dates = exec_get_one("SELECT * FROM dates WHERE appID=%s", (appID,))
+    return dates
+
 def getApplication(appID):
     application = exec_get_all('''
         SELECT apps.id, uid, position, companies.Name, companies.Info, city, state, country, materials.resume, materials.coverletter, materials.github, materials.notes, materials.extra, materials.extraMATERIAL, apps.applied, contact, result, dates.deadline, dates.applied, dates.recent, dates.finalized FROM apps 
@@ -89,8 +105,25 @@ def signin(username, password):
         return 'Login Successful'
     return "Login Unsuccessful"
 
-def editApplication():
-    edited = exec_commit_return()
+def editApplication(id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+    companyID = exec_get_one("SELECT companyID FROM apps WHERE id=%s", (id,))
+    companyO = getCompany(companyID)
+    # print("companies: ", companyO)
+    if (companyO[1] != companyName) or (companyO[2] != companyInfo):
+        print("Updated companies: ", exec_commit_return("UPDATE companies SET name=%s, info=%s WHERE id=%s RETURNING *", (companyName, companyInfo, companyID)))
+    appO = getApp(id)
+    # print('apps: ', appO)
+    if (appO[2] != position) or (appO[4] != city) or (appO[5] != state) or (appO[6] != country) or (appO[7] != applied) or (appO[8] != contact) or (appO[9] != result):
+        print("Updated apps: ", exec_commit_return("UPDATE apps SET position=%s, city=%s, state=%s, country=%s, applied=%s, contact=%s, result=%s WHERE id=%s RETURNING *", (position, city, state, country, applied, contact, result, id)))
+    materialO = getMaterial(id)
+    # print('material0', materialO)
+    if (materialO[2] != resume) or (materialO[3] != cv) or (materialO[4] != git) or (materialO[5] != notes) or (materialO[6] != extra) or (materialO[7] != materials):
+        print("Updated materials: ", exec_commit_return("UPDATE materials SET resume=%s, coverletter=%s, github=%s, notes=%s, extra=%s, extraMATERIAL=%s WHERE id=%s AND appID=%s RETURNING *", (resume, cv, git, notes, extra, materials, id, id)))
+    datesO = getDate(id)
+    # print('date:', datesO)
+    if (datesO[2] != deadline) or (datesO[3] != applied) or (datesO[4] != recentContact) or (datesO[5] != finalized): 
+        print("Updated dates: ", exec_commit_return("UPDATE dates SET deadline=%s, applied=%s, recent=%s, finalized=%s WHERE id=%s AND appID=%s RETURNING *", (deadline, appliedOn, recentContact, finalized, id, id)))
+    edited = getApplication(id)
     return edited
 
 def deleteApplication():
