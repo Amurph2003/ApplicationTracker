@@ -52,6 +52,7 @@ class Tests(unittest.TestCase):
     def test_listUsersEverything(self):
         expected = 1
         actual = listUsersEverything(2)
+        print(actual)
         self.assertEqual(expected, len(actual))
         
     def test_getApplication(self):

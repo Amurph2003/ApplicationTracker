@@ -33,6 +33,7 @@ def listUsersEverything(uid):
         INNER JOIN materials ON materials.appID=apps.id
         INNER JOIN dates ON dates.appID=apps.id
         WHERE uid=%s""", (uid,))
+    print(allApplications)
     return allApplications
 
 def getCompany(companyID):
