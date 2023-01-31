@@ -3,6 +3,7 @@ from db.dbapplying import *
 
 class Applications(Resource):
     def get(self, uid):
+        # uid = request.headers.get('uid')
         applicationData = listUsersEverything(uid)
         applicationsForUser = {}
         for item in applicationData:
@@ -10,9 +11,9 @@ class Applications(Resource):
             applicationsForUser[item[0]] = { 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company ID': item[10], 'Company Name': item[11], 'Company Info': item[12], 'Materials ID': item[13], 'App ID (materials)': item[14], 'Resume': item[15], 'Cover letter': item[16], 'Github': item[17], 'Application Notes': item[18], 'Extra materials?': item[19], 'Extra materials submitted': item[20], 'Dates ID': item[21], 'App ID (dates)': item[22], 'Deadline': str(item[23]), 'Applied On': str(item[24]), 'Recent Communication': str(item[25]), 'Finalized Date': str(item[26]) }        
         return applicationsForUser
     
-    def post(self):
+    def post(self, uid):
         parser = reqparse.RequestParser()
-        parser.add_argument('uid', type=str)
+        # parser.add_argument('uid', type=str)
         parser.add_argument('position', type=str)
         parser.add_argument('companyName', type=str)
         parser.add_argument('companyInfo', type=str)
@@ -28,13 +29,12 @@ class Applications(Resource):
         parser.add_argument('applied', type=str)
         parser.add_argument('contact', type=str)
         parser.add_argument('result', type=str)
-        parser.add_argument('deadline', type=str)
-        parser.add_argument('appliedOn', type=str)
-        parser.add_argument('recent', type=str)
-        parser.add_argument('finalized', type=str)
+        parser.add_argument('deadline')
+        parser.add_argument('appliedOn')
+        parser.add_argument('recent')
+        parser.add_argument('finalized')
         args = parser.parse_args()
         
-        uid = args['uid']
         position = args['position']
         companyName = args['companyName']
         companyInfo = args['companyInfo']
@@ -54,6 +54,15 @@ class Applications(Resource):
         appliedOn = args['appliedOn']
         recent = args['recent']
         finalized = args['finalized']
+        
+        if deadline == '':
+            deadline = None
+        if appliedOn == '':
+            appliedOn = None
+        if recent == '':
+            recent = None
+        if finalized == '':
+            finalized = None
         
         newApplicationData = newApplication(uid, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
         
