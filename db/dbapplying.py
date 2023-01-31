@@ -1,4 +1,5 @@
 from db.dbfunc import exec_get_one, exec_get_all, exec_sql_file, exec_commit, exec_commit_return
+import secrets
 
 def tableConstruction():
     exec_sql_file('applicationtracker/db/tables.sql')
@@ -103,8 +104,9 @@ def signin(username, password):
         return 'Username not found'
     gottenPW = exists[3]
     if gottenPW == password:
-        return 'Login Successful'
-    return "Login Unsuccessful"
+        key = generateKey(exists[0])
+        return ('Login Successful', key)
+    return ("Login Unsuccessful", -1)
 
 def editApplication(id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
     companyID = exec_get_one("SELECT companyID FROM apps WHERE id=%s", (id,))
@@ -130,20 +132,33 @@ def editApplication(id, position, companyName, companyInfo, city, state, country
 def deleteApplication(id):
     deletedApp = exec_commit_return("""
         DELETE FROM apps
-        WHERE id=%s RETURNING *""", (id))
+        WHERE id=%s RETURNING *""", (id,))
     deletedDates = exec_commit_return("""
         DELETE FROM dates
-        WHERE appID=%s RETURNING *""", (id))
+        WHERE appID=%s RETURNING *""", (id,))
     deletedMaterials = exec_commit_return("""
         DELETE FROM materials
-        WHERE appID=%s RETURNING *""", (id))
+        WHERE appID=%s RETURNING *""", (id,))
     if (deletedApp or deletedDates or deletedMaterials) == None:
         return 'Error'
     return deletedApp
 
-def generateKey():
-    return 
+def generateKey(uid):
+    key = secrets.token_hex()
+    generate = exec_commit_return("UPDATE users SET sessionKey=%s WHERE id=%s RETURNING *", (key, uid))
+    if generate != None:
+        return ("Successful Key generation", key)
+    return ("Key was not generated successfully", -1)
 
-def keyCheck(key):
-    return key
+def keyCheck(uid, key):
+    existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))
+    if existKey == key:
+        return True
+    return False
 
+def removeKey(uid):
+    deleteKey = exec_commit_return("UPDATE users SET sessionKey=NULL WHERE id=%s RETURNING sessionKey", (uid,))
+    if deleteKey != None:
+        return 'Key removed successfully'
+    return "Key was not removed"
+    
