@@ -3,7 +3,6 @@ from db.dbapplying import *
 
 class Applications(Resource):
     def get(self, uid):
-        # uid = request.headers.get('uid')
         applicationData = listUsersEverything(uid)
         applicationsForUser = {}
         for item in applicationData:
@@ -13,7 +12,6 @@ class Applications(Resource):
     
     def post(self, uid):
         parser = reqparse.RequestParser()
-        # parser.add_argument('uid', type=str)
         parser.add_argument('position', type=str)
         parser.add_argument('companyName', type=str)
         parser.add_argument('companyInfo', type=str)
@@ -69,4 +67,71 @@ class Applications(Resource):
         print('New Application:', newApplicationData)
         if newApplicationData == None:
             return None
-        return newApplicationData
+        newA = {}
+        item = newApplicationData
+        newA[item[0]] = { 'User ID': item[1], 'Position': item[2], 'City': item[3], 'State': item[4], 'Country': item[5], 'Applied': item[6], 'Contact': item[7], 'Result': item[8], 'Company Name': item[9], 'Company Info': item[10],  'Resume': item[11], 'Cover letter': item[12], 'Github': item[13], 'Application Notes': item[14], 'Extra materials?': item[15], 'Extra materials submitted': item[16], 'Deadline': str(item[17]), 'Applied On': str(item[18]), 'Recent Communication': str(item[19]), 'Finalized Date': str(item[20]) }
+        return newA
+    
+    def put(self, uid):
+        parser = reqparse.RequestParser()
+        parser.add_argument('id', type=str)
+        parser.add_argument('position', type=str)
+        parser.add_argument('companyName', type=str)
+        parser.add_argument('companyInfo', type=str)
+        parser.add_argument('city', type=str)
+        parser.add_argument('state', type=str)
+        parser.add_argument('country', type=str)
+        parser.add_argument('resume', type=str)
+        parser.add_argument('cv', type=str)
+        parser.add_argument('git', type=str)
+        parser.add_argument('notes', type=str)
+        parser.add_argument('extras', type=str)
+        parser.add_argument('materials', type=str)
+        parser.add_argument('applied', type=str)
+        parser.add_argument('contact', type=str)
+        parser.add_argument('result', type=str)
+        parser.add_argument('deadline')
+        parser.add_argument('appliedOn')
+        parser.add_argument('recent')
+        parser.add_argument('finalized')
+        args = parser.parse_args()
+        
+        id = args['id']
+        position = args['position']
+        companyName = args['companyName']
+        companyInfo = args['companyInfo']
+        city = args['city']
+        state = args['state']
+        country = args['country']
+        resume = args['resume']
+        cv = args['cv']
+        git = args['git']
+        notes = args['notes']
+        extras = args['extras']
+        materials = args['materials']
+        applied = args['applied']
+        contact = args['contact']
+        result = args['result']
+        deadline = args['deadline']
+        appliedOn = args['appliedOn']
+        recent = args['recent']
+        finalized = args['finalized']
+        
+        if deadline == '':
+            deadline = None
+        if appliedOn == '':
+            appliedOn = None
+        if recent == '':
+            recent = None
+        if finalized == '':
+            finalized = None
+        
+        editedApplication = editApplication(id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
+        
+        print('Edited Application:', editedApplication)
+        if editedApplication == None:
+            return None
+        editA = {}
+        item = editedApplication
+        editA[item[0]] = { 'User ID': item[1], 'Position': item[2], 'City': item[3], 'State': item[4], 'Country': item[5], 'Applied': item[6], 'Contact': item[7], 'Result': item[8], 'Company Name': item[9], 'Company Info': item[10],  'Resume': item[11], 'Cover letter': item[12], 'Github': item[13], 'Application Notes': item[14], 'Extra materials?': item[15], 'Extra materials submitted': item[16], 'Deadline': str(item[17]), 'Applied On': str(item[18]), 'Recent Communication': str(item[19]), 'Finalized Date': str(item[20]) }
+        return editA
