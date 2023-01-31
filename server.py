@@ -13,5 +13,5 @@ api.add_resource(Applications, '/<int:uid>/applications')
 api.add_resource(Login, '/login')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(port=5001)
     app.run(debug=True)

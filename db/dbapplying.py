@@ -127,6 +127,23 @@ def editApplication(id, position, companyName, companyInfo, city, state, country
     edited = getApplication(id)
     return edited
 
-def deleteApplication():
-    deleted = exec_commit_return()
-    return deleted
+def deleteApplication(id):
+    deletedApp = exec_commit_return("""
+        DELETE FROM apps
+        WHERE id=%s RETURNING *""", (id))
+    deletedDates = exec_commit_return("""
+        DELETE FROM dates
+        WHERE appID=%s RETURNING *""", (id))
+    deletedMaterials = exec_commit_return("""
+        DELETE FROM materials
+        WHERE appID=%s RETURNING *""", (id))
+    if (deletedApp or deletedDates or deletedMaterials) == None:
+        return 'Error'
+    return deletedApp
+
+def generateKey():
+    return 
+
+def keyCheck(key):
+    return key
+

@@ -136,6 +136,18 @@ class Applications(Resource):
         editA[item[0]] = { 'User ID': item[1], 'Position': item[2], 'City': item[3], 'State': item[4], 'Country': item[5], 'Applied': item[6], 'Contact': item[7], 'Result': item[8], 'Company Name': item[9], 'Company Info': item[10],  'Resume': item[11], 'Cover letter': item[12], 'Github': item[13], 'Application Notes': item[14], 'Extra materials?': item[15], 'Extra materials submitted': item[16], 'Deadline': str(item[17]), 'Applied On': str(item[18]), 'Recent Communication': str(item[19]), 'Finalized Date': str(item[20]) }
         return editA
     
+    def delete(self, uid):
+        parser = reqparse.RequestParser()
+        parser.add_argument('id', type=str)
+        args = parser.parse_args()
+        id = args['id']
+        
+        gottenUID = exec_get_one('SELECT uid FROM apps WHERE id=%s', (id,))[0]
+        if gottenUID == uid:
+            deleted = deleteApplication(id)
+            return deleted
+        return 'Not able to delete'
+    
 class Login(Resource):
     def post(self):
         parser = reqparse.RequestParser()
