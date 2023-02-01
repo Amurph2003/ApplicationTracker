@@ -1,4 +1,5 @@
 from db.dbfunc import exec_get_one, exec_get_all, exec_sql_file, exec_commit, exec_commit_return
+import secrets
 
 def tableConstruction():
     exec_sql_file('applicationtracker/db/tables.sql')
@@ -26,13 +27,15 @@ def listUsers():
     allUsers = exec_get_all("""SELECT * FROM users""")
     return allUsers
 
-
-def listUsersEverything(uid):
+def listUsersEverything(uid, key):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     allApplications = exec_get_all("""SELECT * FROM apps
         INNER JOIN companies ON apps.companyID=companies.id
         INNER JOIN materials ON materials.appID=apps.id
         INNER JOIN dates ON dates.appID=apps.id
         WHERE uid=%s""", (uid,))
+    print(allApplications)
     return allApplications
 
 def getCompany(companyID):
@@ -51,7 +54,9 @@ def getDate(appID):
     dates = exec_get_one("SELECT * FROM dates WHERE appID=%s", (appID,))
     return dates
 
-def getApplication(appID):
+def getApplication(appID, uid, key):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     application = exec_get_all('''
         SELECT apps.id, uid, position, companies.Name, companies.Info, city, state, country, materials.resume, materials.coverletter, materials.github, materials.notes, materials.extra, materials.extraMATERIAL, apps.applied, contact, result, dates.deadline, dates.applied, dates.recent, dates.finalized FROM apps 
         INNER JOIN companies ON apps.companyID=companies.id
@@ -86,14 +91,16 @@ def newDates(appID, deadline, applied, recent, finalized):
     dates = exec_commit_return('INSERT INTO dates (appID, deadline, applied, recent, finalized) VALUES (%s, %s, %s, %s, %s) RETURNING *', (appID, deadline, applied, recent, finalized))
     return dates
 
-def newApplication(uid, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+def newApplication(uid, key, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     company = newCompany(companyName, companyInfo)
     companyID = company[0]
     application = newApp(uid, position, companyID, city, state, country, applied, contact, result)
     applicationID = application[0]
     material = newMaterials(applicationID, resume, cv, git, notes, extra, materials)
     dates = newDates(applicationID, deadline, appliedOn, recentContact, finalized)
-    app = getApplication(applicationID)
+    app = getApplication(applicationID, uid, key)
     return app
 
 def signin(username, password):
@@ -102,10 +109,13 @@ def signin(username, password):
         return 'Username not found'
     gottenPW = exists[3]
     if gottenPW == password:
-        return 'Login Successful'
-    return "Login Unsuccessful"
+        key = generateKey(exists[0])
+        return ('Login Successful', key[1])
+    return ("Login Unsuccessful", -1)
 
-def editApplication(id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+def editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     companyID = exec_get_one("SELECT companyID FROM apps WHERE id=%s", (id,))
     companyO = getCompany(companyID)
     # print("companies: ", companyO)
@@ -123,9 +133,42 @@ def editApplication(id, position, companyName, companyInfo, city, state, country
     # print('date:', datesO)
     if (datesO[2] != deadline) or (datesO[3] != applied) or (datesO[4] != recentContact) or (datesO[5] != finalized): 
         print("Updated dates: ", exec_commit_return("UPDATE dates SET deadline=%s, applied=%s, recent=%s, finalized=%s WHERE id=%s AND appID=%s RETURNING *", (deadline, appliedOn, recentContact, finalized, id, id)))
-    edited = getApplication(id)
+    edited = getApplication(id, uid, key)
     return edited
 
-def deleteApplication():
-    deleted = exec_commit_return()
-    return deleted
+def deleteApplication(key, uid, id):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
+    deletedApp = exec_commit_return("""
+        DELETE FROM apps
+        WHERE id=%s RETURNING *""", (id,))
+    deletedDates = exec_commit_return("""
+        DELETE FROM dates
+        WHERE appID=%s RETURNING *""", (id,))
+    deletedMaterials = exec_commit_return("""
+        DELETE FROM materials
+        WHERE appID=%s RETURNING *""", (id,))
+    if (deletedApp or deletedDates or deletedMaterials) == None:
+        return 'Error'
+    return deletedApp
+
+def generateKey(uid):
+    key = secrets.token_hex()
+    generate = exec_commit_return("UPDATE users SET sessionKey=%s WHERE id=%s RETURNING *", (key, uid))
+    if generate != None:
+        return ("Successful Key generation", key)
+    return ("Key was not generated successfully", -1)
+
+def keyCheck(uid, key):
+    existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))
+    # print('existing: ', existKey[0], 'provided: ', key)
+    if existKey[0] == key:
+        return True
+    return False
+
+def removeKey(uid):
+    deleteKey = exec_commit_return("UPDATE users SET sessionKey=NULL WHERE id=%s RETURNING sessionKey", (uid,))
+    if deleteKey != None:
+        return 'Key removed successfully'
+    return "Key was not removed"
+    

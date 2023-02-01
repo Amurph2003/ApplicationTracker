@@ -51,5 +51,6 @@ CREATE TABLE users(
     hashedpw        VARCHAR(200) NOT NULL,
     email           VARCHAR(200) NOT NULL,
     datejoined      DATE NOT NULL DEFAULT CURRENT_DATE,
-    age             INTEGER NOT NULL
+    age             INTEGER NOT NULL,
+    sessionKey      VARCHAR(150)
 );
