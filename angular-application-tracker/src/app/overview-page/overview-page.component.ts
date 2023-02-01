@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Overview } from '../overview';
 import { OverviewService } from '../overview.service';
 import { User } from '../user';
@@ -9,15 +9,24 @@ import { User } from '../user';
   templateUrl: './overview-page.component.html',
   styleUrls: ['./overview-page.component.css']
 })
-export class OverviewPageComponent {
+export class OverviewPageComponent implements OnInit{
   apps: Overview[] = [];
+  user!: User;
 
   constructor (
     private overviewService: OverviewService,
-  ) {}
+    private router: Router,
+  ) {
+    const data = router.getCurrentNavigation()?.extras?.state?['data']: this.user;
+  }
 
-  getOver(uid: string): void {
-    const id = Number(uid);
+  ngOnInit(): void {
+    this.user = data;
+      this.getOver()
+  }
+
+  getOver(): void {
+    const id = Number(this.user.id);
     this.overviewService.getOverview(id).subscribe(app => {
       this.apps=app;
       console.log(this.apps);

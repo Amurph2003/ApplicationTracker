@@ -24,6 +24,6 @@ export class LoginComponent implements OnInit {
   login(un: string, pw: string) {
     this.loginService.postLogIn(un, pw).subscribe(loggedIn => {this.user = loggedIn});
     if (this.user?.sessionKey !== 's')
-      this.router.navigate(['/overview']);
+      this.router.navigate(['/overview'], { state: { data: this.user } });
   }
 }
