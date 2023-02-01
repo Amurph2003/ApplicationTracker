@@ -100,7 +100,7 @@ def newApplication(uid, key, position, companyName, companyInfo, city, state, co
     applicationID = application[0]
     material = newMaterials(applicationID, resume, cv, git, notes, extra, materials)
     dates = newDates(applicationID, deadline, appliedOn, recentContact, finalized)
-    app = getApplication(applicationID)
+    app = getApplication(applicationID, uid, key)
     return app
 
 def signin(username, password):
@@ -133,7 +133,7 @@ def editApplication(key, uid, id, position, companyName, companyInfo, city, stat
     # print('date:', datesO)
     if (datesO[2] != deadline) or (datesO[3] != applied) or (datesO[4] != recentContact) or (datesO[5] != finalized): 
         print("Updated dates: ", exec_commit_return("UPDATE dates SET deadline=%s, applied=%s, recent=%s, finalized=%s WHERE id=%s AND appID=%s RETURNING *", (deadline, appliedOn, recentContact, finalized, id, id)))
-    edited = getApplication(id)
+    edited = getApplication(id, uid, key)
     return edited
 
 def deleteApplication(key, uid, id):
