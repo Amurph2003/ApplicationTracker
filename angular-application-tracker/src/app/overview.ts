@@ -1,5 +1,5 @@
 export interface Overview {
-    AppID: number;
+    appID: number;
     uid: number;
     position: string;
     companyID: number;
