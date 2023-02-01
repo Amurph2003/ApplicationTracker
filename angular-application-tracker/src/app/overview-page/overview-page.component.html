@@ -1,0 +1,12 @@
+<p>overview-page works!</p>
+<div>
+<label for="overview">Here</label>
+<input type="number" id="overview" #uid>
+<button type="button" (click)="getOver(uid.value);">Here</button>
+</div>
+
+<ul>
+    <li *ngFor="let app of apps">
+        {{app.AppID}}
+    </li>
+</ul>

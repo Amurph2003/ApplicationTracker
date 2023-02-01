@@ -1,0 +1,20 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Overview } from './overview';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class OverviewService {
+
+  private overviewURL = 'http://192.168.1.163:5001/overview';
+
+  constructor(
+    private http: HttpClient,
+  ) { }
+
+  getOverview(uid: number) {
+    return this.http.get<Overview[]>(this.overviewURL + '/' + uid).pipe();
+  }
+}
