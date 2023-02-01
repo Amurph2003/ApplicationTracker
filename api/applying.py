@@ -1,9 +1,11 @@
 from flask_restful import Resource, reqparse, request
 from db.dbapplying import *
 
-class Applications(Resource):
+class Application(Resource):
     def get(self, uid):
-        applicationData = listUsersEverything(uid)
+        key = request.headers.get('key')
+        appID = request.headers.get('appID')
+        applicationData = getApplication(appID, uid, key)
         applicationsForUser = {}
         for item in applicationData:
             print(item)
@@ -33,6 +35,7 @@ class Applications(Resource):
         parser.add_argument('finalized')
         args = parser.parse_args()
         
+        key = request.headers.get('key')
         position = args['position']
         companyName = args['companyName']
         companyInfo = args['companyInfo']
@@ -62,7 +65,7 @@ class Applications(Resource):
         if finalized == '':
             finalized = None
         
-        newApplicationData = newApplication(uid, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
+        newApplicationData = newApplication(uid, key, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
         
         print('New Application:', newApplicationData)
         if newApplicationData == None:
@@ -96,6 +99,7 @@ class Applications(Resource):
         parser.add_argument('finalized')
         args = parser.parse_args()
         
+        key = request.headers.get('key')
         id = args['id']
         position = args['position']
         companyName = args['companyName']
@@ -125,8 +129,11 @@ class Applications(Resource):
             recent = None
         if finalized == '':
             finalized = None
-        
-        editedApplication = editApplication(id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
+            
+        gottenID = exec_get_one('SELECT id FROM apps WHERE uid=%s AND id=%s', (uid, id))[0]
+        editApplication = ()
+        if gottenID == id:
+            editedApplication = editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
         
         print('Edited Application:', editedApplication)
         if editedApplication == None:
@@ -141,10 +148,11 @@ class Applications(Resource):
         parser.add_argument('id', type=str)
         args = parser.parse_args()
         id = args['id']
+        key = request.headers.get('key')
         
         gottenUID = exec_get_one('SELECT uid FROM apps WHERE id=%s', (id,))[0]
         if gottenUID == uid:
-            deleted = deleteApplication(id)
+            deleted = deleteApplication(key, uid, id)
             return deleted
         return 'Not able to delete'
     
@@ -159,4 +167,15 @@ class Login(Resource):
         pw = args['password']
         result = signin(un, pw)
         print(result)
-        return result
+        return result[1]
+    
+class Overview(Resource):
+    def get(self, uid):
+        key = request.headers.get('key')
+        allApplications = listUsersEverything(uid, key)
+        applicationsForUser = {}
+        print(allApplications)
+        for item in allApplications:
+            print(item)
+            applicationsForUser[item[0]] = { 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company ID': item[10], 'Company Name': item[11], 'Company Info': item[12], 'Materials ID': item[13], 'App ID (materials)': item[14], 'Resume': item[15], 'Cover letter': item[16], 'Github': item[17], 'Application Notes': item[18], 'Extra materials?': item[19], 'Extra materials submitted': item[20], 'Dates ID': item[21], 'App ID (dates)': item[22], 'Deadline': str(item[23]), 'Applied On': str(item[24]), 'Recent Communication': str(item[25]), 'Finalized Date': str(item[26]) }        
+        return applicationsForUser

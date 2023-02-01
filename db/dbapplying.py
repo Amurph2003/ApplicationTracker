@@ -27,8 +27,9 @@ def listUsers():
     allUsers = exec_get_all("""SELECT * FROM users""")
     return allUsers
 
-
-def listUsersEverything(uid):
+def listUsersEverything(uid, key):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     allApplications = exec_get_all("""SELECT * FROM apps
         INNER JOIN companies ON apps.companyID=companies.id
         INNER JOIN materials ON materials.appID=apps.id
@@ -53,7 +54,9 @@ def getDate(appID):
     dates = exec_get_one("SELECT * FROM dates WHERE appID=%s", (appID,))
     return dates
 
-def getApplication(appID):
+def getApplication(appID, uid, key):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     application = exec_get_all('''
         SELECT apps.id, uid, position, companies.Name, companies.Info, city, state, country, materials.resume, materials.coverletter, materials.github, materials.notes, materials.extra, materials.extraMATERIAL, apps.applied, contact, result, dates.deadline, dates.applied, dates.recent, dates.finalized FROM apps 
         INNER JOIN companies ON apps.companyID=companies.id
@@ -88,7 +91,9 @@ def newDates(appID, deadline, applied, recent, finalized):
     dates = exec_commit_return('INSERT INTO dates (appID, deadline, applied, recent, finalized) VALUES (%s, %s, %s, %s, %s) RETURNING *', (appID, deadline, applied, recent, finalized))
     return dates
 
-def newApplication(uid, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+def newApplication(uid, key, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     company = newCompany(companyName, companyInfo)
     companyID = company[0]
     application = newApp(uid, position, companyID, city, state, country, applied, contact, result)
@@ -105,10 +110,12 @@ def signin(username, password):
     gottenPW = exists[3]
     if gottenPW == password:
         key = generateKey(exists[0])
-        return ('Login Successful', key)
+        return ('Login Successful', key[1])
     return ("Login Unsuccessful", -1)
 
-def editApplication(id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+def editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     companyID = exec_get_one("SELECT companyID FROM apps WHERE id=%s", (id,))
     companyO = getCompany(companyID)
     # print("companies: ", companyO)
@@ -129,7 +136,9 @@ def editApplication(id, position, companyName, companyInfo, city, state, country
     edited = getApplication(id)
     return edited
 
-def deleteApplication(id):
+def deleteApplication(key, uid, id):
+    if keyCheck(uid, key) != True:
+        return 'Invalid Key'
     deletedApp = exec_commit_return("""
         DELETE FROM apps
         WHERE id=%s RETURNING *""", (id,))
@@ -152,7 +161,8 @@ def generateKey(uid):
 
 def keyCheck(uid, key):
     existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))
-    if existKey == key:
+    # print('existing: ', existKey[0], 'provided: ', key)
+    if existKey[0] == key:
         return True
     return False
 
