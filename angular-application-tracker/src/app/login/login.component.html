@@ -1,1 +1,7 @@
 <p>login works!</p>
+
+<input id="username" #username>
+
+<input type="password" id="password" #password>
+
+<button type="button" (click)="login(username.value, password.value)" >Submit</button>

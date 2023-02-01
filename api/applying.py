@@ -167,15 +167,14 @@ class Login(Resource):
         pw = args['password']
         result = signin(un, pw)
         print(result)
-        return result[1]
+        return result
     
 class Overview(Resource):
     def get(self, uid):
         key = request.headers.get('key')
         allApplications = listUsersEverything(uid, key)
-        applicationsForUser = {}
+        applicationsForUser = []
         print(allApplications)
         for item in allApplications:
-            print(item)
-            applicationsForUser[item[0]] = { 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company ID': item[10], 'Company Name': item[11], 'Company Info': item[12], 'Materials ID': item[13], 'App ID (materials)': item[14], 'Resume': item[15], 'Cover letter': item[16], 'Github': item[17], 'Application Notes': item[18], 'Extra materials?': item[19], 'Extra materials submitted': item[20], 'Dates ID': item[21], 'App ID (dates)': item[22], 'Deadline': str(item[23]), 'Applied On': str(item[24]), 'Recent Communication': str(item[25]), 'Finalized Date': str(item[26]) }        
+            applicationsForUser.append({'AppID': item[0], 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company Name': item[10], 'Company Info': item[11], 'Resume': item[12], 'Cover letter': item[13], 'Github': item[14], 'Application Notes': item[15], 'Extra materials?': item[16], 'Extra materials submitted': item[17],'Deadline': str(item[18]), 'Applied On': str(item[19]), 'Recent Communication': str(item[20]), 'Finalized Date': str(item[21])})
         return applicationsForUser

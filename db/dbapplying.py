@@ -28,8 +28,8 @@ def listUsers():
     return allUsers
 
 def listUsersEverything(uid, key):
-    if keyCheck(uid, key) != True:
-        return 'Invalid Key'
+    # if keyCheck(uid, key) != True:
+    #     return 'Invalid Key'
     allApplications = exec_get_all("""SELECT * FROM apps
         INNER JOIN companies ON apps.companyID=companies.id
         INNER JOIN materials ON materials.appID=apps.id
@@ -104,14 +104,14 @@ def newApplication(uid, key, position, companyName, companyInfo, city, state, co
     return app
 
 def signin(username, password):
-    exists = exec_get_one("SELECT * FROM users WHERE username=%s", (username,))
+    exists = exec_get_one("SELECT id, username, hashedpw FROM users WHERE username=%s", (username,))
     if exists == None:
         return 'Username not found'
-    gottenPW = exists[3]
+    gottenPW = exists[2]
     if gottenPW == password:
         key = generateKey(exists[0])
-        return ('Login Successful', key[1])
-    return ("Login Unsuccessful", -1)
+        return [exists[0], exists[1], key[1]]
+    return ("Login Unsuccessful")
 
 def editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
     if keyCheck(uid, key) != True:
