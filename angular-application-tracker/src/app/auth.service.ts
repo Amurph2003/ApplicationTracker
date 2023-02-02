@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from './auth';
@@ -7,12 +8,14 @@ import { Auth } from './auth';
 })
 export class AuthService {
 
+  private userURL = 'http://localhost:5001/users/';
   private token = 'key';
   private id = 'uid';
 
   constructor(
     private auth: Auth,
     private router: Router,
+    private http: HttpClient,
   ) { }
 
   login(un: string, pw: string) {
@@ -32,7 +35,11 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     let existToken = localStorage.getItem(this.token);
-    return existToken != null && existToken.length > 1;
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': existToken! })};
+    var valid: boolean = false;
+    this.http.get<boolean>(this.userURL+this.getId(), httpOptions).subscribe(data => valid=data);
+    return valid
   }
 
   getToken(): string | null {
