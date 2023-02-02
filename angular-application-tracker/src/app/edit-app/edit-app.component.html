@@ -1,16 +1,14 @@
-<p>application works!</p>
-
+<p>edit-app works!</p>
 
 <div *ngIf="application">
-    <button routerLink="/application/{{application.appId}}/edit">Edit</button>
-
     <h1>{{application.position}}, {{application.companyName}}</h1>
     <h2>{{application.city}}, {{application.state}}, {{application.country}}</h2>
 
     <p>Notes: {{application.appNotes}}</p>
 
     <div id="status">
-        <p>Applied yet?: {{application.applied}}</p>
+        <label for="appyet">Applied yet?:</label>
+        <input id="appyet" [(ngModel)]="application.applied" placeholder="boolean"/>
         <p>In contact/Communicating?: {{application.contact}}</p>
         <p>Outcome: {{application.result}}</p>
     </div>

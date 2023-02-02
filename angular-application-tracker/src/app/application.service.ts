@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 })
 export class ApplicationService {
 
-  private applicationURL = 'http://192.168.1.163:5001/';
+  private applicationURL = 'http://localhost:5001/';
 
   constructor(
     private http: HttpClient,

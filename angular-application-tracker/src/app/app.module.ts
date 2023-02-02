@@ -5,8 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OverviewPageComponent } from './overview-page/overview-page.component';
 import { LoginComponent } from './login/login.component';
-import { TokenInterceptor } from './token.interceptor';
 import { ApplicationComponent } from './application/application.component';
+import { EditAppComponent } from './edit-app/edit-app.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,15 +15,15 @@ import { ApplicationComponent } from './application/application.component';
     OverviewPageComponent,
     LoginComponent,
     ApplicationComponent,
+    EditAppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true
-  }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
