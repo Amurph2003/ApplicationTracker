@@ -6,10 +6,9 @@ class Application(Resource):
         key = request.headers.get('key')
         appID = request.headers.get('appID')
         applicationData = getApplication(appID, uid, key)
-        applicationsForUser = {}
         for item in applicationData:
             print(item)
-            applicationsForUser[item[0]] = { 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company ID': item[10], 'Company Name': item[11], 'Company Info': item[12], 'Materials ID': item[13], 'App ID (materials)': item[14], 'Resume': item[15], 'Cover letter': item[16], 'Github': item[17], 'Application Notes': item[18], 'Extra materials?': item[19], 'Extra materials submitted': item[20], 'Dates ID': item[21], 'App ID (dates)': item[22], 'Deadline': str(item[23]), 'Applied On': str(item[24]), 'Recent Communication': str(item[25]), 'Finalized Date': str(item[26]) }        
+            applicationsForUser = {'appId': item[0], 'uid': item[1], 'position': item[2], 'companyName': item[3], 'companyNotes': item[4], 'city': item[5], 'state': item[6], 'country': item[7], 'resume': item[8], 'coverletter': item[9], 'github': item[10], 'appNotes': item[11], 'extras': item[12], 'materials': item[13], 'applied': item[14], 'contact': item[15], 'result': item[16], 'Deadline': str(item[17]), 'Applied On': str(item[18]), 'Recent Communication': str(item[19]), 'Finalized Date': str(item[20])}
         return applicationsForUser
     
     def post(self, uid):

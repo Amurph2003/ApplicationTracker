@@ -7,7 +7,7 @@ import { Auth } from './auth';
 })
 export class AuthService {
 
-  private token = 'token';
+  private token = 'key';
   private id = 'uid';
 
   constructor(

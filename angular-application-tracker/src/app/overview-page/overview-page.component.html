@@ -7,6 +7,7 @@
 
 <ul>
     <li *ngFor="let app of apps">
+        <a routerLink="/application/{{app.appID}}"><div>
         {{app.position}}, {{app.companyName}}
         <br>
         {{app.city}}, {{app.state}}, {{app.country}}
@@ -16,5 +17,6 @@
         Applied on: {{app.appliedOn}}
         <br>
         Latest communication recieved: {{app.recentCommunication}}
+        </div></a>
     </li>
 </ul>

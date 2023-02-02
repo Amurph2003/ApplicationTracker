@@ -28,8 +28,9 @@ def listUsers():
     return allUsers
 
 def listUsersEverything(uid, key):
-    # if keyCheck(uid, key) != True:
-    #     return 'Invalid Key'
+    if keyCheck(uid, key) != True:
+        print(uid, key)
+        return 'Invalid Key'
     allApplications = exec_get_all("""SELECT * FROM apps
         INNER JOIN companies ON apps.companyID=companies.id
         INNER JOIN materials ON materials.appID=apps.id
@@ -56,13 +57,16 @@ def getDate(appID):
 
 def getApplication(appID, uid, key):
     if keyCheck(uid, key) != True:
+        print('uid, key: ', uid, key)
+        print('key error')
         return 'Invalid Key'
     application = exec_get_all('''
         SELECT apps.id, uid, position, companies.Name, companies.Info, city, state, country, materials.resume, materials.coverletter, materials.github, materials.notes, materials.extra, materials.extraMATERIAL, apps.applied, contact, result, dates.deadline, dates.applied, dates.recent, dates.finalized FROM apps 
         INNER JOIN companies ON apps.companyID=companies.id
         INNER JOIN materials ON materials.appID=apps.id
         INNER JOIN dates ON dates.appID=apps.id
-        WHERE apps.id=%s''', (appID,))[0]
+        WHERE apps.id=%s''', (appID,))
+    print(application)
     return application
 
 def newUser(name, username, email, password, date, age):
