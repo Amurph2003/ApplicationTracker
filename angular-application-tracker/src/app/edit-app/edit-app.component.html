@@ -2,22 +2,35 @@
 
 <div *ngIf="application">
     <h1>{{application.position}}, {{application.companyName}}</h1>
+    <input id="position" [(ngModel)]="application.position">
+    <input id="compName" [(ngModel)]="application.companyName">
+
     <h2>{{application.city}}, {{application.state}}, {{application.country}}</h2>
+    <input id="city" [(ngModel)]="application.city">
+    <input id="state" [(ngModel)]="application.state">
+    <input id="country" [(ngModel)]="application.country">
 
     <p>Notes: {{application.appNotes}}</p>
+    <input id="notes" [(ngModel)]="application.appNotes">
 
     <div id="status">
-        <label for="appyet">Applied yet?:</label>
-        <input id="appyet" [(ngModel)]="application.applied" placeholder="boolean"/>
-        <p>In contact/Communicating?: {{application.contact}}</p>
-        <p>Outcome: {{application.result}}</p>
+        <p>Applied yet?:</p>
+        <input id="appyet" [(ngModel)]="application.applied">
+        <p>In contact/Communicating?:</p>
+        <input id="contact" [(ngModel)]="application.contact">
+        <p>Outcome:</p>
+        <input id="state" [(ngModel)]="application.result">
     </div>
 
     <div id="materials">
-        <p>Resume: {{application.resume}}</p>
-        <p>Cover letter: {{application.coverletter}}</p>
-        <p>Github: {{application.github}}</p>
-        <p>Supplemental material: {{application.extras}}</p>
+        <p>Resume:</p>
+        <input id="state" [(ngModel)]="application.resume">
+        <p>Cover letter:</p>
+        <input id="state" [(ngModel)]="application.coverletter">
+        <p>Github:</p>
+        <input id="state" [(ngModel)]="application.github">
+        <p>Supplemental material:</p>
+        <input id="state" [(ngModel)]="application.extras">
         <p *ngIf="application.materials">       {{application.materials}}</p>
     </div>
 
