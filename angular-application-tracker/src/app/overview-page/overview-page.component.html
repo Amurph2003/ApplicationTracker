@@ -7,6 +7,14 @@
 
 <ul>
     <li *ngFor="let app of apps">
-        {{app.appID}}
+        {{app.position}}, {{app.companyName}}
+        <br>
+        {{app.city}}, {{app.state}}, {{app.country}}
+        <br>
+        Deadline: {{app.deadline}}
+        <br>
+        Applied on: {{app.appliedOn}}
+        <br>
+        Latest communication recieved: {{app.recentCommunication}}
     </li>
 </ul>
