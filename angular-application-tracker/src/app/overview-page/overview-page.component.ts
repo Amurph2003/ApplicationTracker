@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { Overview } from '../overview';
 import { OverviewService } from '../overview.service';
 import { User } from '../user';
@@ -11,22 +12,20 @@ import { User } from '../user';
 })
 export class OverviewPageComponent implements OnInit{
   apps: Overview[] = [];
-  user!: User;
 
   constructor (
     private overviewService: OverviewService,
+    private authService: AuthService,
     private router: Router,
-  ) {
-    const data = router.getCurrentNavigation()?.extras?.state?['data']: this.user;
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.user = data;
-      this.getOver()
+    this.getOver()
   }
 
   getOver(): void {
-    const id = Number(this.user.id);
+    console.log(this.authService.getId());
+    const id = this.authService.getId();
     this.overviewService.getOverview(id).subscribe(app => {
       this.apps=app;
       console.log(this.apps);

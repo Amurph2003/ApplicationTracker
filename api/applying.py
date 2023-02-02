@@ -176,5 +176,5 @@ class Overview(Resource):
         applicationsForUser = []
         print(allApplications)
         for item in allApplications:
-            applicationsForUser.append({'AppID': item[0], 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company Name': item[10], 'Company Info': item[11], 'Resume': item[12], 'Cover letter': item[13], 'Github': item[14], 'Application Notes': item[15], 'Extra materials?': item[16], 'Extra materials submitted': item[17],'Deadline': str(item[18]), 'Applied On': str(item[19]), 'Recent Communication': str(item[20]), 'Finalized Date': str(item[21])})
+            applicationsForUser.append({'appID': item[0], 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company Name': item[10], 'Company Info': item[11], 'Resume': item[12], 'Cover letter': item[13], 'Github': item[14], 'Application Notes': item[15], 'Extra materials?': item[16], 'Extra materials submitted': item[17],'Deadline': str(item[18]), 'Applied On': str(item[19]), 'Recent Communication': str(item[20]), 'Finalized Date': str(item[21])})
         return applicationsForUser

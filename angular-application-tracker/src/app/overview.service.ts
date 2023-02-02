@@ -14,7 +14,7 @@ export class OverviewService {
     private http: HttpClient,
   ) { }
 
-  getOverview(uid: number) {
-    return this.http.get<Overview[]>(this.overviewURL + '/' + uid).pipe();
+  getOverview(uid: string) {
+    return this.http.get<Overview[]>(this.overviewURL + '/' + uid);
   }
 }
