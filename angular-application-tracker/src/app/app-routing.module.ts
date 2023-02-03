@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'application/:id', component: ApplicationComponent, canActivate: [AuthGuard] },
   { path: 'application/:id/edit', component: EditAppComponent, canActivate: [AuthGuard] },
+  { path: 'application/new', component: EditAppComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

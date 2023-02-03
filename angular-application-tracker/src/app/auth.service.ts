@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Auth } from './auth';
 
 @Injectable({
@@ -20,11 +21,13 @@ export class AuthService {
 
   login(un: string, pw: string) {
     this.auth.login(un, pw).subscribe((data) => {
-      localStorage.setItem(this.token, data[2]);
-      localStorage.setItem(this.id, data[0]);
+      console.log(data);
+      if ((data != 'Login Unsuccessful') && (data != "Username not found")){
+        localStorage.setItem(this.token, data[2]);
+        localStorage.setItem(this.id, data[0]);
 
-      console.log(data[0]);
-      this.router.navigate(['/']);
+        console.log(data[0]);
+        this.router.navigate(['/']);}
     })
   }
 
@@ -33,13 +36,12 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn(): boolean {
+  isLoggedIn(): Observable<boolean> {
     let existToken = localStorage.getItem(this.token);
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': existToken! })};
-    var valid: boolean = false;
-    this.http.get<boolean>(this.userURL+this.getId(), httpOptions).subscribe(data => valid=data);
-    return valid
+    return this.http.get<boolean>(this.userURL+this.getId(), httpOptions);
+    // return valid
   }
 
   getToken(): string | null {

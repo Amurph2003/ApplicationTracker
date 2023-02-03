@@ -19,7 +19,9 @@ export class EditAppComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-      this.getApp()
+      this.getApp();
+      if (this.application == null)
+        this.newApp(); 
   }
 
   getApp(): void {
@@ -34,5 +36,9 @@ export class EditAppComponent implements OnInit{
 
   editApp() {
 
+  }
+
+  newApp() {
+    
   }
 }
