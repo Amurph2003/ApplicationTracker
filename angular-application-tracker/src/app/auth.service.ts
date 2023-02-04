@@ -9,7 +9,7 @@ import { Auth } from './auth';
 })
 export class AuthService {
 
-  private userURL = 'http://localhost:5001/users/';
+  private userURL = 'http://192.168.1.163:5001/users/';
   private token = 'key';
   private id = 'uid';
 

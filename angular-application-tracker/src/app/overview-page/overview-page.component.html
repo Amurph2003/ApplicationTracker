@@ -5,6 +5,8 @@
 <button type="button" (click)="getOver(uid.value);">Here</button>
 </div> -->
 
+<button routerLink="/application/new">New</button>
+
 <ul>
     <li *ngFor="let app of apps">
         <a routerLink="/application/{{app.appID}}"><div>

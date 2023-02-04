@@ -41,3 +41,39 @@
         <p>Finalized on: {{application.finalizedDate | date: 'longDate'}}</p>
     </div>
 </div>
+
+<div *ngIf="route == 'new'">
+    <label for="position">Position: </label>
+    <input id="position" #position>
+    <input id="compName" #companyName>
+
+    <input id="city" #city>
+    <input id="state" #state>
+    <input id="country" #country>
+
+    <input id="notes" #appNotes>
+
+    <div id="status">
+        <input id="appyet" #applied>
+        <input id="contact" #contact>
+        <input id="state" #result>
+    </div>
+
+    <div id="materials">
+        <p>Resume:</p>
+        <input id="state" #resume>
+        <p>Cover letter:</p>
+        <input id="state" #coverletter>
+        <p>Github:</p>
+        <input id="state" #github>
+        <p>Supplemental material:</p>
+        <input id="state" #extras>
+    </div>
+
+    <div id="dates">
+        <!-- <p>Applied on: {{application.appliedOn | date: 'longDate'}}</p>
+        <p>Deadline: {{application.deadline | date: 'longDate'}}</p>
+        <p>Most Recent Communication/Update: {{application.recentCommunication | date: 'longDate'}}</p>
+        <p>Finalized on: {{application.finalizedDate | date: 'longDate'}}</p> -->
+    </div>
+</div>

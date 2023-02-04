@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Application } from '../application';
 import { ApplicationService } from '../application.service';
 import { AuthService } from '../auth.service';
@@ -11,27 +11,32 @@ import { AuthService } from '../auth.service';
 })
 export class EditAppComponent implements OnInit{
   application?: Application;
+  route?: string;
 
   constructor (
     private applicationService: ApplicationService,
     private authService: AuthService,
-    private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-      this.getApp();
-      if (this.application == null)
-        this.newApp(); 
+    this.route = String(this.router.url).split('/')[2];
+    console.log(this.route != 'new');
+    if(this.route != 'new')
+      this.getApp(this.route);
+    else
+      this.newApp();
   }
 
-  getApp(): void {
+  getApp(appId: string): void {
     const uid = this.authService.getId();
-    const appId = String(this.route.snapshot.paramMap.get('id'));
     console.log(appId);
     this.applicationService.getApplication(uid, appId).subscribe(application => {
       this.application=application;
       console.log(this.application);
-      console.log(application)});
+      console.log(application)
+    });
+    
   }
 
   editApp() {
@@ -39,6 +44,8 @@ export class EditAppComponent implements OnInit{
   }
 
   newApp() {
-    
+    const uid = this.authService.getId();
+    console.log(uid);
+
   }
 }
