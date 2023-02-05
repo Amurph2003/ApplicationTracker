@@ -40,6 +40,8 @@
         <p>Most Recent Communication/Update: {{application.recentCommunication | date: 'longDate'}}</p>
         <p>Finalized on: {{application.finalizedDate | date: 'longDate'}}</p>
     </div>
+    <button (click)="save()">Save</button>
+    <button routerLink="/application/{{application.appId}}">Back</button>
 </div>
 
 <div *ngIf="route == 'new'">
@@ -93,4 +95,5 @@
     </div>
 
     <button type="Button" (click)="newApp(position.value, companyName.value, companyInfo.value, city.value, state.value, country.value, resume.value, coverletter.value, github.value, appNotes.value, extras.value, mater.value, applied.value, contact.value, result.value,  appOn.value, dead.value, recents.value, finalized.value);" >Submit</button>
+    <button routerLink="/">Back</button>
 </div>

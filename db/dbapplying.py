@@ -66,7 +66,7 @@ def getApplication(appID, uid, key):
         INNER JOIN materials ON materials.appID=apps.id
         INNER JOIN dates ON dates.appID=apps.id
         WHERE apps.id=%s''', (appID,))
-    print(application)
+    # print('h', application)
     return application
 
 def newUser(name, username, email, password, date, age):

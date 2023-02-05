@@ -3,6 +3,7 @@
 
 <div *ngIf="application">
     <button routerLink="/application/{{application.appId}}/edit">Edit</button>
+    <button routerLink="/">Back</button>
 
     <h1>{{application.position}}, {{application.companyName}}</h1>
     <h2>{{application.city}}, {{application.state}}, {{application.country}}</h2>

@@ -128,17 +128,15 @@ class Application(Resource):
         if finalized == '':
             finalized = None
             
-        gottenID = exec_get_one('SELECT id FROM apps WHERE uid=%s AND id=%s', (uid, id))[0]
-        editApplication = ()
-        if gottenID == id:
-            editedApplication = editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
+        # gottenID = exec_get_one('SELECT id FROM apps WHERE uid=%s AND id=%s', (uid, id))[0]
+        # if gottenID != id:
+        #     return None
+        editedApplication = editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)[0]
         
-        print('Edited Application:', editedApplication)
-        if editedApplication == None:
-            return None
         editA = {}
         item = editedApplication
-        editA[item[0]] = { 'User ID': item[1], 'Position': item[2], 'City': item[3], 'State': item[4], 'Country': item[5], 'Applied': item[6], 'Contact': item[7], 'Result': item[8], 'Company Name': item[9], 'Company Info': item[10],  'Resume': item[11], 'Cover letter': item[12], 'Github': item[13], 'Application Notes': item[14], 'Extra materials?': item[15], 'Extra materials submitted': item[16], 'Deadline': str(item[17]), 'Applied On': str(item[18]), 'Recent Communication': str(item[19]), 'Finalized Date': str(item[20]) }
+        editA = {'appId': item[0], 'uid': item[1], 'position': item[2], 'companyName': item[3], 'companyNotes': item[4], 'city': item[5], 'state': item[6], 'country': item[7], 'resume': item[8], 'coverletter': item[9], 'github': item[10], 'appNotes': item[11], 'extras': item[12], 'materials': item[13], 'applied': item[14], 'contact': item[15], 'result': item[16], 'deadline': str(item[17]), 'appliedOn': str(item[18]), 'recentCommunication': str(item[19]), 'finalizedDate': str(item[20])}
+        
         return editA
     
     def delete(self, uid):

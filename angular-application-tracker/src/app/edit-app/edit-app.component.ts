@@ -37,8 +37,16 @@ export class EditAppComponent implements OnInit{
     
   }
 
-  editApp() {
+  save() {
+    const uid = this.authService.getId();
+    const app = this.application!;
+    console.log(app.position);
+    this.applicationService.editApplication(uid, String(app.appId), app.position, app.companyName, app.companyInfo, app.city, app.state, app.country, String(app.resume), String(app.coverletter), String(app.github), app.appNotes, String(app.extras), app.materials, String(app.applied), String(app.contact), String(app.result), app.deadline, app.appliedOn, app.recentCommunication, app.finalizedDate).subscribe(app => {
+      console.log(app); 
+      this.application = app;
+    });
 
+    this.router.navigate(['/application/' + String(this.application!.appId)]);
   }
 
   newApp(pos: string, compN: string, compI: string = '', city: string, state: string, count: string, resume: string, cv: string, git: string, notes: string = '', extras: string, mater: string = '', appli: string, con: string, result: string, dead: string = '', appliedOn: string = '', recent: string = '', fin: string = '') {
