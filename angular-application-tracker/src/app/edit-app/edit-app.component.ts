@@ -24,8 +24,6 @@ export class EditAppComponent implements OnInit{
     console.log(this.route != 'new');
     if(this.route != 'new')
       this.getApp(this.route);
-    else
-      this.newApp();
   }
 
   getApp(appId: string): void {
@@ -43,9 +41,12 @@ export class EditAppComponent implements OnInit{
 
   }
 
-  newApp() {
+  newApp(pos: string, compN: string, compI: string = '', city: string, state: string, count: string, resume: string, cv: string, git: string, notes: string = '', extras: string, mater: string = '', appli: string, con: string, result: string, dead: string = '', appliedOn: string = '', recent: string = '', fin: string = '') {
     const uid = this.authService.getId();
     console.log(uid);
-
+    this.applicationService.newApplication(uid, pos, compN, compI, city, state, count, resume, cv, git, notes, extras, mater, appli, con, result, dead, appliedOn, recent, fin).subscribe();
+    setTimeout(() => {
+      this.router.navigate(['']);
+    }, 250);
   }
 }

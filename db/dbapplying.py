@@ -85,6 +85,7 @@ def newCompany(name, info):
 
 def newApp(uid, position, company, city, state, country, applied, contact, result):
     app = exec_commit_return('INSERT INTO apps (uid, position, companyID, city, state, country, applied, contact, result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *', (uid, position, company, city, state, country, applied, contact, result))
+    print(app)
     return app
 
 def newMaterials(appID, resume, cv, git, notes, extra, eMaterials):
@@ -97,6 +98,7 @@ def newDates(appID, deadline, applied, recent, finalized):
 
 def newApplication(uid, key, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
     if keyCheck(uid, key) != True:
+        print(uid, key)
         return 'Invalid Key'
     company = newCompany(companyName, companyInfo)
     companyID = company[0]
@@ -104,6 +106,7 @@ def newApplication(uid, key, position, companyName, companyInfo, city, state, co
     applicationID = application[0]
     material = newMaterials(applicationID, resume, cv, git, notes, extra, materials)
     dates = newDates(applicationID, deadline, appliedOn, recentContact, finalized)
+    print('app', application)
     app = getApplication(applicationID, uid, key)
     return app
 
