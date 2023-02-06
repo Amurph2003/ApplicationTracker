@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Application } from '../application';
 import { ApplicationService } from '../application.service';
 import { AuthService } from '../auth.service';
@@ -16,10 +16,15 @@ export class ApplicationComponent implements OnInit {
     private applicationService: ApplicationService,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-      this.getApp()
+    // console.log(!this.authService.isLoggedIn())
+    console.log('he');
+    
+    console.log('hello');
+    this.getApp()
   }
 
   getApp(): void {
@@ -29,5 +34,15 @@ export class ApplicationComponent implements OnInit {
       this.application=application;
       console.log(this.application);
       console.log(application)});
+  }
+
+  deleteApp(id: number) {
+    const uid = this.authService.getId();
+    this.applicationService.deleteApplication(uid, String(id)).subscribe(app => {
+      console.log(app);
+    });
+    setTimeout(() => {
+      this.router.navigate(['']);
+    }, 250);
   }
 }

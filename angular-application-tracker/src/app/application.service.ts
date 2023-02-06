@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class ApplicationService {
 
-  private applicationURL = 'http://192.168.1.163:5001/';
+  private applicationURL = 'http://100.89.33.109:5001/';
 
   constructor(
     private http: HttpClient,
@@ -45,5 +45,16 @@ export class ApplicationService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': key })
     };
     return this.http.post<Application>(this.applicationURL + uid + '/application' , app, httpOptions).pipe(tap((app: Application) => console.log(app)));
+  }
+
+  deleteApplication(uid: string, appId: string): Observable<Application> {
+    const key = this.authService.getToken()!;
+    
+    console.log(key);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': key }),
+      body: { 'id': appId }
+    };
+    return this.http.delete<Application>(this.applicationURL + uid + '/application', httpOptions).pipe(tap((app: Application) => console.log(app)));
   }
 }

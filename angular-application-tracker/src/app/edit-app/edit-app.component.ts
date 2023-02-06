@@ -20,10 +20,13 @@ export class EditAppComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    if (!this.authService.isLoggedIn())
+      this.router.navigate(['/login']);
     this.route = String(this.router.url).split('/')[2];
     console.log(this.route != 'new');
     if(this.route != 'new')
-      this.getApp(this.route);
+      this.getApp(this.route!);
+
   }
 
   getApp(appId: string): void {

@@ -180,5 +180,5 @@ class Users(Resource):
         key = request.headers.get('key')
         result = keyCheck(uid, key)
         
-        return {'result': result}
+        return result
         

@@ -9,7 +9,7 @@ import { Auth } from './auth';
 })
 export class AuthService {
 
-  private userURL = 'http://192.168.1.163:5001/users/';
+  private userURL = 'http://100.89.33.109:5001/users/';
   private token = 'key';
   private id = 'uid';
 
@@ -36,11 +36,21 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn(): Observable<boolean> {
+  isLoggedIn() {
     let existToken = localStorage.getItem(this.token);
+    if (existToken == null)
+      return false
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': existToken! })};
-    return this.http.get<boolean>(this.userURL+this.getId(), httpOptions);
+    const Logged = this.http.get<boolean>(this.userURL+this.getId(), httpOptions);
+    const rV = Logged.subscribe(data => {
+      console.log(data)
+        if (data == true)
+          return true;
+        return false
+      })
+    console.log(rV)
+    return rV
     // return valid
   }
 
