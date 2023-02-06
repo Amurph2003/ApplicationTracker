@@ -4,6 +4,7 @@ import { ApplicationComponent } from './application/application.component';
 import { AuthGuard } from './auth.guard';
 import { EditAppComponent } from './edit-app/edit-app.component';
 import { LoginComponent } from './login/login.component';
+import { NoExistComponent } from './no-exist/no-exist.component';
 import { OverviewPageComponent } from './overview-page/overview-page.component';
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'application/new', component: EditAppComponent, canActivate: [AuthGuard] },
   { path: 'application/:id', component: ApplicationComponent, canActivate: [AuthGuard] },
   { path: 'application/:id/edit', component: EditAppComponent, canActivate: [AuthGuard] },
+  { path: '**', component: NoExistComponent },
   
 ];
 

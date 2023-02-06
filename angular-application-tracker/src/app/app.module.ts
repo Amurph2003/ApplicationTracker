@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { ApplicationComponent } from './application/application.component';
 import { EditAppComponent } from './edit-app/edit-app.component';
 import { FormsModule } from '@angular/forms';
+import { NoExistComponent } from './no-exist/no-exist.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FormsModule } from '@angular/forms';
     LoginComponent,
     ApplicationComponent,
     EditAppComponent,
+    NoExistComponent,
   ],
   imports: [
     BrowserModule,
