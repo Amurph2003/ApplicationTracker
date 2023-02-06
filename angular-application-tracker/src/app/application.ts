@@ -20,4 +20,6 @@ export interface Application {
     appliedOn: string;
     recentCommunication: string;
     finalizedDate: string;
+
+    
 }

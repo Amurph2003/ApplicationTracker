@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Application } from '../application';
 import { ApplicationService } from '../application.service';
 import { AuthService } from '../auth.service';
 import { Overview } from '../overview';
@@ -45,5 +46,22 @@ export class OverviewPageComponent implements OnInit{
     setTimeout(() => {
       window.location.reload();
     }, 250);
+  }
+
+  sort(by: string, order: string = 'asc') {
+    return function innerSort(a: any, b: any){
+      if (!a.hasOwnProperty(by) || !b.hasOwnProperty(by)) {
+        return 0;
+      }
+
+      const itemA = (typeof a[by] === 'string') ? a[by].toUpperCase() : a[by];
+      const itemB = (typeof b[by] === 'string') ? b[by].toUpperCase() : b[by];
+      
+      if (itemA > itemB)
+        return 1;
+      else if (itemA < itemB)
+        return -1;
+      return 0;
+    }
   }
 }
