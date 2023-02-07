@@ -53,5 +53,6 @@ CREATE TABLE users(
     datejoined      DATE NOT NULL DEFAULT CURRENT_DATE,
     age             INTEGER NOT NULL,
     sessionKey      VARCHAR(150),
-    skCreate        TIMESTAMP
+    skCreate        TIMESTAMP,
+    skUsed          TIMESTAMP
 );

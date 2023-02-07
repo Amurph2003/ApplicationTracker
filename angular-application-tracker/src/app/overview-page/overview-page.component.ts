@@ -14,7 +14,7 @@ import { User } from '../user';
 })
 export class OverviewPageComponent implements OnInit{
   apps: Overview[] = [];
-  @Input() sorter?: string;
+  sorter: string = 'default';
 
   constructor (
     private overviewService: OverviewService,
@@ -49,8 +49,10 @@ export class OverviewPageComponent implements OnInit{
     }, 250);
   }
 
-  sort(by: string, order: string = 'asc'){
-    this.apps.sort(this.MyCustomSort(by, order));
+  sort(order: string = 'asc'){
+    this.apps.sort(this.MyCustomSort(this.sorter, order));
+    console.log('here')
+    // window.location.reload()
     console.log(this.apps)
   }
 

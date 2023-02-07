@@ -1,13 +1,13 @@
 <p>overview-page works!</p>
-<!-- <div>
-<label for="overview">Here</label>
-<input type="number" id="overview" #uid>
-<button type="button" (click)="getOver(uid.value);">Here</button>
-</div> -->
 
 <button routerLink="/application/new">New</button>
 
 <button (click)="logOut()">Log Out</button>
+
+<select [(ngModel)]="this.sorter">
+    <option value="">Default</option>
+    <option value="companyName">Company Name</option>
+</select>
 
 <ul>
     <li *ngFor="let app of apps">

@@ -173,7 +173,9 @@ def keyCheck(uid, key):
     existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))
     # print('existing: ', existKey[0], 'provided: ', key)
     if existKey[0] == key:
-        return True
+        if keyLog(uid) == 0:
+            return True, 
+        return False
     return False
 
 def removeKey(uid):
@@ -183,4 +185,10 @@ def removeKey(uid):
         return 'Key removed successfully'
     return "Key was not removed"
 
-    
+def keyLog(uid):
+    usedAt = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    updatedKeyUse = exec_commit_return("UPDATE users SET skUsed=%s WHERE id=%s RETURNING skUsed", (usedAt, uid,))
+    print(updatedKeyUse)
+    if updatedKeyUse == None:
+        return -1
+    return 0
