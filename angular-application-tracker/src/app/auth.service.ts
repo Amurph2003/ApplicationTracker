@@ -9,7 +9,7 @@ import { Auth } from './auth';
 })
 export class AuthService {
 
-  private userURL = 'http://localhost:5001/users/';
+  private userURL = 'http://100.89.33.109:5001/users/';
   private token = 'key';
   private id = 'uid';
 
@@ -32,6 +32,7 @@ export class AuthService {
   }
 
   logout() {
+    this.auth.logout(localStorage.getItem(this.id)!)
     localStorage.removeItem(this.token);
     this.router.navigate(['/login']);
   }

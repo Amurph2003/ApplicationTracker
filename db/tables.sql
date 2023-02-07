@@ -52,5 +52,6 @@ CREATE TABLE users(
     email           VARCHAR(200) NOT NULL,
     datejoined      DATE NOT NULL DEFAULT CURRENT_DATE,
     age             INTEGER NOT NULL,
-    sessionKey      VARCHAR(150)
+    sessionKey      VARCHAR(150),
+    skCreate        TIMESTAMP
 );

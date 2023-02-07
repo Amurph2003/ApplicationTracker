@@ -1,3 +1,4 @@
+import datetime
 from db.dbfunc import exec_get_one, exec_get_all, exec_sql_file, exec_commit, exec_commit_return
 import secrets
 
@@ -36,7 +37,7 @@ def listUsersEverything(uid, key):
         INNER JOIN materials ON materials.appID=apps.id
         INNER JOIN dates ON dates.appID=apps.id
         WHERE uid=%s""", (uid,))
-    print(allApplications)
+    # print(allApplications)
     return allApplications
 
 def getCompany(companyID):
@@ -161,7 +162,9 @@ def deleteApplication(key, uid, id):
 
 def generateKey(uid):
     key = secrets.token_hex()
-    generate = exec_commit_return("UPDATE users SET sessionKey=%s WHERE id=%s RETURNING *", (key, uid))
+    # print(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+    generate = exec_commit_return("UPDATE users SET sessionKey=%s, skCreate=%s WHERE id=%s RETURNING *", (key, datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), uid))
+    # print(generate)
     if generate != None:
         return ("Successful Key generation", key)
     return ("Key was not generated successfully", -1)
@@ -174,8 +177,10 @@ def keyCheck(uid, key):
     return False
 
 def removeKey(uid):
-    deleteKey = exec_commit_return("UPDATE users SET sessionKey=NULL WHERE id=%s RETURNING sessionKey", (uid,))
+    deleteKey = exec_commit_return("UPDATE users SET sessionKey=null WHERE id=%s RETURNING sessionKey", (uid,))
+    print(deleteKey)
     if deleteKey != None:
         return 'Key removed successfully'
     return "Key was not removed"
+
     

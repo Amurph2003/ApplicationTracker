@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
     providedIn: 'root',
 })
 export class Auth {
-    private loginURL = 'http://localhost:5001/login';
+    private loginURL = 'http://100.89.33.109:5001/login';
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -20,5 +20,11 @@ export class Auth {
         return this.http.post<string>(this.loginURL, { username: username, password: password}, this.httpOptions);
     }
 
-    
+    logout(uid: string) {
+        console.log('h12')
+        const httpOptions1 = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json', 'uid': uid })
+        };
+        return this.http.put<string>(this.loginURL, '', httpOptions1).subscribe()
+    }
 }

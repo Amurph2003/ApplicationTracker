@@ -14,6 +14,7 @@ import { User } from '../user';
 })
 export class OverviewPageComponent implements OnInit{
   apps: Overview[] = [];
+  @Input() sorter?: string;
 
   constructor (
     private overviewService: OverviewService,
@@ -32,7 +33,7 @@ export class OverviewPageComponent implements OnInit{
     console.log(this.authService.getId());
     const id = this.authService.getId();
     this.overviewService.getOverview(id).subscribe(app => {
-      this.apps=app.sort(this.MyCustomSort('position', 'asc'));
+      this.apps=app;
       console.log(this.apps);
       console.log(app)
     });
@@ -46,6 +47,11 @@ export class OverviewPageComponent implements OnInit{
     setTimeout(() => {
       window.location.reload();
     }, 250);
+  }
+
+  sort(by: string, order: string = 'asc'){
+    this.apps.sort(this.MyCustomSort(by, order));
+    console.log(this.apps)
   }
 
   MyCustomSort(by: string, order: string = 'asc') {
@@ -65,5 +71,9 @@ export class OverviewPageComponent implements OnInit{
         result = -1;
     return (order === 'desc') ? (result * -1): result
     }
+  }
+
+  logOut() {
+    this.authService.logout();
   }
 }
