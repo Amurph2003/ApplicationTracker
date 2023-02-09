@@ -30,7 +30,7 @@ def listUsers():
 
 def listUsersEverything(uid, key):
     print('k', keyCheck(uid, key))
-    if keyCheck(uid, key)[0] != True:
+    if keyCheck(uid, key) != True:
         print(uid, key)
         return 'Invalid Key'
     allApplications = exec_get_all("""SELECT * FROM apps
@@ -58,7 +58,7 @@ def getDate(appID):
     return dates
 
 def getApplication(appID, uid, key):
-    if keyCheck(uid, key)[0] != True:
+    if keyCheck(uid, key) != True:
         print('uid, key: ', uid, key)
         print('key error')
         return 'Invalid Key'
@@ -100,7 +100,7 @@ def newDates(appID, deadline, applied, recent, finalized):
     return dates
 
 def newApplication(uid, key, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
-    if keyCheck(uid, key)[0] != True:
+    if keyCheck(uid, key) != True:
         print(uid, key)
         return 'Invalid Key'
     company = newCompany(companyName, companyInfo)
@@ -124,7 +124,7 @@ def signin(username, password):
     return ("Login Unsuccessful")
 
 def editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
-    if keyCheck(uid, key)[0] != True:
+    if keyCheck(uid, key) != True:
         return 'Invalid Key'
     companyID = exec_get_one("SELECT companyID FROM apps WHERE id=%s", (id,))
     companyO = getCompany(companyID)
@@ -147,7 +147,7 @@ def editApplication(key, uid, id, position, companyName, companyInfo, city, stat
     return edited
 
 def deleteApplication(key, uid, id):
-    if keyCheck(uid, key)[0] != True:
+    if keyCheck(uid, key) != True:
         return 'Invalid Key'
     deletedApp = exec_commit_return("""
         DELETE FROM apps
@@ -172,9 +172,9 @@ def generateKey(uid):
     return ("Key was not generated successfully", -1)
 
 def keyCheck(uid, key):
-    existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))
+    existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))[0]
     # print('existing: ', existKey[0], 'provided: ', key)
-    if existKey[0] == key:
+    if existKey == key:
         if keyLog(uid) == 0:
             return True
         return False
