@@ -29,7 +29,8 @@ def listUsers():
     return allUsers
 
 def listUsersEverything(uid, key):
-    if keyCheck(uid, key) != True:
+    print('k', keyCheck(uid, key))
+    if keyCheck(uid, key)[0] != True:
         print(uid, key)
         return 'Invalid Key'
     allApplications = exec_get_all("""SELECT * FROM apps
@@ -57,7 +58,7 @@ def getDate(appID):
     return dates
 
 def getApplication(appID, uid, key):
-    if keyCheck(uid, key) != True:
+    if keyCheck(uid, key)[0] != True:
         print('uid, key: ', uid, key)
         print('key error')
         return 'Invalid Key'
@@ -74,7 +75,8 @@ def newUser(name, username, email, password, date, age):
     exists = exec_get_one('SELECT username, email FROM users WHERE email=%s OR username=%s', (email, username))
     if exists != None:
         return exists
-    user = exec_commit_return('''INSERT INTO users (username, hashedpw, name, email, datejoined, age) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *''', (username, password, name, email, date, age))
+    # print(age)
+    user = exec_commit_return('''INSERT INTO users (username, hashedpw, name, email, datejoined, age) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *''', (username, password, name, email, date, str(age)))
     return user
 
 def newCompany(name, info):
@@ -98,7 +100,7 @@ def newDates(appID, deadline, applied, recent, finalized):
     return dates
 
 def newApplication(uid, key, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
-    if keyCheck(uid, key) != True:
+    if keyCheck(uid, key)[0] != True:
         print(uid, key)
         return 'Invalid Key'
     company = newCompany(companyName, companyInfo)
@@ -122,7 +124,7 @@ def signin(username, password):
     return ("Login Unsuccessful")
 
 def editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
-    if keyCheck(uid, key) != True:
+    if keyCheck(uid, key)[0] != True:
         return 'Invalid Key'
     companyID = exec_get_one("SELECT companyID FROM apps WHERE id=%s", (id,))
     companyO = getCompany(companyID)
@@ -145,7 +147,7 @@ def editApplication(key, uid, id, position, companyName, companyInfo, city, stat
     return edited
 
 def deleteApplication(key, uid, id):
-    if keyCheck(uid, key) != True:
+    if keyCheck(uid, key)[0] != True:
         return 'Invalid Key'
     deletedApp = exec_commit_return("""
         DELETE FROM apps
@@ -174,7 +176,7 @@ def keyCheck(uid, key):
     # print('existing: ', existKey[0], 'provided: ', key)
     if existKey[0] == key:
         if keyLog(uid) == 0:
-            return True, 
+            return True
         return False
     return False
 
@@ -187,7 +189,7 @@ def removeKey(uid):
 
 def keyLog(uid):
     usedAt = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    updatedKeyUse = exec_commit_return("UPDATE users SET skUsed=%s WHERE id=%s RETURNING skUsed", (usedAt, uid,))
+    updatedKeyUse = exec_commit_return("UPDATE users SET skUsed=%s WHERE id=%s RETURNING skUsed", (usedAt, uid,))[0]
     print(updatedKeyUse)
     if updatedKeyUse == None:
         return -1

@@ -176,7 +176,7 @@ class Overview(Resource):
         key = request.headers.get('key')
         allApplications = listUsersEverything(uid, key)
         applicationsForUser = []
-        # print(allApplications)
+        print(allApplications)
         for item in allApplications:
             applicationsForUser.append({'appID': item[0], 'uid': item[1], 'position': item[2], 'companyId': item[3], 'city': item[4], 'state': item[5], 'country': item[6], 'applied': item[7], 'contact': item[8], 'result': item[9], 'companyName': item[11], 'companyInfo': item[12], 'resume': item[15], 'coverletter': item[16], 'github': item[17], 'applicationNotes': item[18], 'extraMaterials': item[19], 'materialsSubmitted': item[20],'deadline': str(item[23]), 'appliedOn': str(item[24]), 'recentCommunication': str(item[25]), 'finalizedDate': str(item[26])})
         return applicationsForUser
@@ -185,6 +185,28 @@ class Users(Resource):
     def get(self, uid):
         key = request.headers.get('key')
         result = keyCheck(uid, key)
+        print(result)
         
         return result
         
+class NewUser(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', type=str)
+        parser.add_argument('username', type=str)
+        parser.add_argument('email', type=str)
+        parser.add_argument('password', type=str)
+        parser.add_argument('age', type=int)
+        args = parser.parse_args()
+        
+        name = args['name']
+        un = args['username']
+        email = args['email']
+        pw = args['password']
+        age = args['age']
+        date = datetime.datetime.today()
+        
+        userNew = newUser(name, un, email, pw, date, age)
+        createdUser = { 'id': userNew[0], 'username': userNew[2], 'name': userNew[1], 'email': userNew[4] }
+        
+        return createdUser

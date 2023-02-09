@@ -9,6 +9,7 @@ import { ApplicationComponent } from './application/application.component';
 import { EditAppComponent } from './edit-app/edit-app.component';
 import { FormsModule } from '@angular/forms';
 import { NoExistComponent } from './no-exist/no-exist.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NoExistComponent } from './no-exist/no-exist.component';
     ApplicationComponent,
     EditAppComponent,
     NoExistComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

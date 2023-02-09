@@ -10,6 +10,7 @@ import { Auth } from './auth';
 export class AuthService {
 
   private userURL = 'http://100.89.33.109:5001/users/';
+  private newUserURL = 'http://100.89.33.109:5001/user';
   private token = 'key';
   private id = 'uid';
 
@@ -61,5 +62,14 @@ export class AuthService {
 
   getId(): string {
     return localStorage.getItem(this.id)!;
+  }
+
+  register(name: string, username: string, email: string, password: string, age: number){
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    const userN = this.http.post(this.newUserURL, { 'name': name, 'username': username, 'email': email, 'password': password, 'age': age }, httpOptions);
+    console.log(userN)
+    return userN
   }
 }

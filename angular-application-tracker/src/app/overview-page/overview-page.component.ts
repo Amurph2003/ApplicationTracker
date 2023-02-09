@@ -14,7 +14,7 @@ import { User } from '../user';
 })
 export class OverviewPageComponent implements OnInit{
   apps: Overview[] = [];
-  sorter: string = 'default';
+  // order: string = "asc";
 
   constructor (
     private overviewService: OverviewService,
@@ -49,14 +49,15 @@ export class OverviewPageComponent implements OnInit{
     }, 250);
   }
 
-  sort(order: string = 'asc'){
-    this.apps.sort(this.MyCustomSort(this.sorter, order));
+  sort(by: string, order: string){
+    this.apps.sort(this.MyCustomSort(by, order));
     console.log('here')
-    // window.location.reload()
     console.log(this.apps)
   }
 
-  MyCustomSort(by: string, order: string = 'asc') {
+  
+
+  MyCustomSort(by: string = 'default', order: string = 'asc') {
     return function innerSort(a: any, b: any){
       if (!a.hasOwnProperty(by) || !b.hasOwnProperty(by)) {
         console.log('here');
