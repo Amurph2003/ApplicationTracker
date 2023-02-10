@@ -14,7 +14,7 @@ import { User } from '../user';
 })
 export class OverviewPageComponent implements OnInit{
   apps: Overview[] = [];
-  // order: string = "asc";
+  localC = 'United States';
 
   constructor (
     private overviewService: OverviewService,

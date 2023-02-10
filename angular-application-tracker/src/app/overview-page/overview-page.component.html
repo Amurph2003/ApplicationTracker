@@ -1,38 +1,39 @@
-<p>overview-page works!</p>
 
-<button routerLink="/application/new">New</button>
 
-<button (click)="logOut()">Log Out</button>
+<button id="newApp" routerLink="/application/new">New</button>
 
-<select #sorter (change)="sort(sorter.value, ord.value)">
-    <option value="appID">Default</option>
-    <option value="companyName">Company Name</option>
-    <option value="deadline">Deadline</option>
-    <option value="appliedOn">Applied On</option>
-    <option value="recentCommunication"> Recent Contact</option>
-    <option value="city">City</option>
-    <option value="state">State</option>
-</select>
+<button id="logOut" (click)="logOut()">Log Out</button>
 
-<select #ord (change)="sort(sorter.value, ord.value)">
-    <option value="asc">Ascending</option>
-    <option value="desc">Descending</option>
-</select>
+<div id="sorters">
+    <select #sorter (change)="sort(sorter.value, ord.value)">
+        <option value="appID">Sort By:</option>
+        <option value="companyName">Company Name</option>
+        <option value="deadline">Deadline</option>
+        <option value="appliedOn">Applied On</option>
+        <option value="recentCommunication"> Recent Contact</option>
+        <option value="city">City</option>
+        <option value="state">State</option>
+    </select>
 
-<ul>
-    <li *ngFor="let app of apps">
-        <a routerLink="/application/{{app.appID}}"><div>
-        {{app.position}}, {{app.companyName}}
-        <br>
-        {{app.city}}, {{app.state}}, {{app.country}}
-        <br>
-        Deadline: {{app.deadline}}
-        <br>
-        Applied on: {{app.appliedOn}}
-        <br>
-        Latest communication recieved: {{app.recentCommunication}}
-        </div></a>
+    <select #ord (change)="sort(sorter.value, ord.value)">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+    </select>
+</div>
 
-        <button (click)="deleteApp(app.appID)">Delete</button>
-    </li>
-</ul>
+<div id="overview">
+    <ul>
+        <li *ngFor="let app of apps" class="app" id="">
+            <a routerLink="/application/{{app.appID}}"><div>
+            <p class='oTitle'>{{app.position}} <br>{{app.companyName}}</p>
+            <p class='oDetail'>{{app.city}}, {{app.state}}</p>
+            <p class="oDetail" *ngIf="app.country != localC">{{app.country}}</p>
+            <p class='oDetail'>Deadline: {{app.deadline}}</p>
+            <p class='oDetail'>Applied on: {{app.appliedOn}}</p>
+            <p class='oDetail'>Latest communication recieved: {{app.recentCommunication}}</p>
+            </div></a>
+
+            <button class="deleteButton" (click)="deleteApp(app.appID)">Delete</button>
+        </li>
+    </ul>
+</div>

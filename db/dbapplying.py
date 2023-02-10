@@ -1,6 +1,7 @@
 import datetime
 from db.dbfunc import exec_get_one, exec_get_all, exec_sql_file, exec_commit, exec_commit_return
 import secrets
+import hashlib
 
 def tableConstruction():
     exec_sql_file('applicationtracker/db/tables.sql')
@@ -76,7 +77,8 @@ def newUser(name, username, email, password, date, age):
     if exists != None:
         return exists
     # print(age)
-    user = exec_commit_return('''INSERT INTO users (username, hashedpw, name, email, datejoined, age) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *''', (username, password, name, email, date, str(age)))
+    pw = hashPW(password)
+    user = exec_commit_return('''INSERT INTO users (username, hashedpw, name, email, datejoined, age) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *''', (username, pw, name, email, date, str(age)))
     return user
 
 def newCompany(name, info):
@@ -118,7 +120,7 @@ def signin(username, password):
     if exists == None:
         return 'Username not found'
     gottenPW = exists[2]
-    if gottenPW == password:
+    if gottenPW == hashPW(password):
         key = generateKey(exists[0])
         return [exists[0], exists[1], key[1]]
     return ("Login Unsuccessful")
@@ -194,3 +196,7 @@ def keyLog(uid):
     if updatedKeyUse == None:
         return -1
     return 0
+
+def hashPW(password):
+    hashed = hashlib.sha512(password.encode('utf-8')).hexdigest()
+    return hashed

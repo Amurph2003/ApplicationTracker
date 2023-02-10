@@ -28,6 +28,6 @@ INSERT INTO dates(appID, deadline, applied, recent, finalized) VALUES
 ;
 
 INSERT INTO users(name, username, hashedpw, email, datejoined, age) VALUES 
-    ('Test One', 'Test123', '123', '123@test.fake', '2023-01-27', 3),
-    ('Test Eleven', 'Test111213', '111213', '111213@test.fake', '2023-01-27', 11)
+    ('Test One', 'Test123', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2', '123@test.fake', '2023-01-27', 3),
+    ('Test Eleven', 'Test111213', 'cbca6ef10b00d2203da9fee289ba3f024a58eba8a9e47ed5458abfa09c482a912a5ac9d76f14497666fa04ec6ab9f817c425d31489d542c71d176abdfdeea009', '111213@test.fake', '2023-01-27', 11)
 ;

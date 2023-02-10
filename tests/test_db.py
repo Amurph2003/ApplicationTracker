@@ -64,7 +64,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(expected, actual[0])
         
     def test_newUser(self):
-        expected = (3, 'unittest', 'unittestAcct', 'unit123test', 'unittest@test.unit', datetime.date(2023, 1, 27), 34, None, None, None)
+        expected = (3, 'unittest', 'unittestAcct', 'd81ec110d410c089f5f2c5af9f3f31a1a98df405e0c1000e10a0033138da1621886d70edcb1ca9733e10c8d1f842e078c8ee2b0b75e6e17aace1e894d0168487', 'unittest@test.unit', datetime.date(2023, 1, 27), 34, None, None, None)
         actual = newUser('unittest', 'unittestAcct', 'unittest@test.unit', 'unit123test', '2023-01-27', 34)
         self.assertEqual(expected, actual)
         

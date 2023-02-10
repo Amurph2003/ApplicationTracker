@@ -1,1 +1,75 @@
 /* You can add global styles to this file, and also import other style files */
+
+ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-right: 40px;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+}
+
+p {
+    margin: 0;
+}
+
+li {
+    width: 300px;
+    max-height: 150px;
+    border-style: solid;
+    border-radius: 10%;
+    padding: 2%;
+    margin: 25px;
+}
+
+#logOut {
+    position: absolute;
+    right: 50px;
+}
+
+#sortBy {
+    padding-right: 5px;
+}
+
+#sorters {
+    position: absolute;
+    right: 150px;
+    display: flex;
+    flex-direction: row;
+}
+
+#overview {
+    padding-top: 20px;
+}
+
+.oTitle {
+    padding-bottom: 15px;
+    font-size: 14pt;
+}
+
+.oDetail {
+    color: blue;
+}
+
+.deleteButton {
+    float: right;
+    position: relative;
+    right: 10px;
+    bottom: -10px;
+}
+
+.waiting {
+    background-color: yellow;
+}
+
+.applied {
+    background-color: green;
+}
+
+.trouble {
+    background-color: red;
+}
