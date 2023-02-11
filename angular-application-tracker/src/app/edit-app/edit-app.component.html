@@ -1,0 +1,104 @@
+<p>edit-app works!</p>
+
+
+
+<button (click)="logOut()">Log Out</button>
+
+
+<div *ngIf="application">
+    <h1>{{application.position}}, {{application.companyName}}</h1>
+    <input id="position" [(ngModel)]="application.position">
+    <input id="compName" [(ngModel)]="application.companyName">
+
+    <h2>{{application.city}}, {{application.state}}, {{application.country}}</h2>
+    <input id="city" [(ngModel)]="application.city">
+    <input id="state" [(ngModel)]="application.state">
+    <input id="country" [(ngModel)]="application.country">
+
+    <p>Notes: {{application.appNotes}}</p>
+    <input id="notes" [(ngModel)]="application.appNotes">
+
+    <div id="status">
+        <p>Applied yet?:</p>
+        <input id="appyet" [(ngModel)]="application.applied">
+        <p>In contact/Communicating?:</p>
+        <input id="contact" [(ngModel)]="application.contact">
+        <p>Outcome:</p>
+        <input id="state" [(ngModel)]="application.result">
+    </div>
+
+    <div id="materials">
+        <p>Resume:</p>
+        <input id="state" [(ngModel)]="application.resume">
+        <p>Cover letter:</p>
+        <input id="state" [(ngModel)]="application.coverletter">
+        <p>Github:</p>
+        <input id="state" [(ngModel)]="application.github">
+        <p>Supplemental material:</p>
+        <input id="state" [(ngModel)]="application.extras">
+        <p *ngIf="application.materials">       {{application.materials}}</p>
+    </div>
+
+    <div id="dates">
+        <p>Applied on: {{application.appliedOn | date: 'longDate'}}</p>
+        <p>Deadline: {{application.deadline | date: 'longDate'}}</p>
+        <p>Most Recent Communication/Update: {{application.recentCommunication | date: 'longDate'}}</p>
+        <p>Finalized on: {{application.finalizedDate | date: 'longDate'}}</p>
+    </div>
+    <button (click)="save()">Save</button>
+    <button routerLink="/application/{{application.appId}}">Back</button>
+</div>
+
+<div *ngIf="route == 'new'">
+    <label for="position">Position:</label>
+    <input id="position" #position>
+    <label for="compName">Company Name:</label>
+    <input id="compName" #companyName>
+    <label for="compInfo"> Company Info:</label>
+    <input id="compInfo" #companyInfo>
+
+    <label for="city">City:</label>
+    <input id="city" #city>
+    <label for="state">State:</label>
+    <input id="state" #state>
+    <label for="country">Country:</label>
+    <input id="country" #country>
+
+    <label for="notes">Notes:</label>
+    <input id="notes" #appNotes>
+
+    <div id="status">
+        <label for="appyet">Applied Yet:</label>
+        <input id="appyet" #applied>
+        <label for="contact">In contact with:</label>
+        <input id="contact" #contact>
+        <label for="result">Result:</label>
+        <input id="result" #result>
+    </div>
+
+    <div id="materials">
+        <label for="resume">Resume:</label>
+        <input id="resume" #resume>
+        <label for="cv">Cover letter:</label>
+        <input id="cv" #coverletter>
+        <label for="github">Github:</label>
+        <input id="github" #github>
+        <label for="extras">Supplemental material:</label>
+        <input id="extras" #extras>
+        <input id="mater" #mater>
+    </div>
+
+    <div id="dates">
+        <p>Applied on:</p>
+        <input type="date" id="appliedOn" #appOn>
+        <p>Deadline:</p>
+        <input type="date" id="deadline" #dead>
+        <p>Most Recent Communication/Update:</p>
+        <input type="date" id="recents" #recents>
+        <p>Finalized on:</p>
+        <input type="date" id="finalized" #finalized>
+    </div>
+
+    <button type="Button" (click)="newApp(position.value, companyName.value, companyInfo.value, city.value, state.value, country.value, resume.value, coverletter.value, github.value, appNotes.value, extras.value, mater.value, applied.value, contact.value, result.value,  appOn.value, dead.value, recents.value, finalized.value);" >Submit</button>
+    <button routerLink="/">Back</button>
+</div>

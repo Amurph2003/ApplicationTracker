@@ -1,5 +1,7 @@
+import datetime
 from db.dbfunc import exec_get_one, exec_get_all, exec_sql_file, exec_commit, exec_commit_return
 import secrets
+import hashlib
 
 def tableConstruction():
     exec_sql_file('applicationtracker/db/tables.sql')
@@ -28,14 +30,16 @@ def listUsers():
     return allUsers
 
 def listUsersEverything(uid, key):
+    print('k', keyCheck(uid, key))
     if keyCheck(uid, key) != True:
+        print(uid, key)
         return 'Invalid Key'
     allApplications = exec_get_all("""SELECT * FROM apps
         INNER JOIN companies ON apps.companyID=companies.id
         INNER JOIN materials ON materials.appID=apps.id
         INNER JOIN dates ON dates.appID=apps.id
         WHERE uid=%s""", (uid,))
-    print(allApplications)
+    # print(allApplications)
     return allApplications
 
 def getCompany(companyID):
@@ -56,20 +60,25 @@ def getDate(appID):
 
 def getApplication(appID, uid, key):
     if keyCheck(uid, key) != True:
+        print('uid, key: ', uid, key)
+        print('key error')
         return 'Invalid Key'
     application = exec_get_all('''
         SELECT apps.id, uid, position, companies.Name, companies.Info, city, state, country, materials.resume, materials.coverletter, materials.github, materials.notes, materials.extra, materials.extraMATERIAL, apps.applied, contact, result, dates.deadline, dates.applied, dates.recent, dates.finalized FROM apps 
         INNER JOIN companies ON apps.companyID=companies.id
         INNER JOIN materials ON materials.appID=apps.id
         INNER JOIN dates ON dates.appID=apps.id
-        WHERE apps.id=%s''', (appID,))[0]
+        WHERE apps.id=%s''', (appID,))
+    # print('h', application)
     return application
 
 def newUser(name, username, email, password, date, age):
     exists = exec_get_one('SELECT username, email FROM users WHERE email=%s OR username=%s', (email, username))
     if exists != None:
         return exists
-    user = exec_commit_return('''INSERT INTO users (username, hashedpw, name, email, datejoined, age) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *''', (username, password, name, email, date, age))
+    # print(age)
+    pw = hashPW(password)
+    user = exec_commit_return('''INSERT INTO users (username, hashedpw, name, email, datejoined, age) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *''', (username, pw, name, email, date, str(age)))
     return user
 
 def newCompany(name, info):
@@ -81,6 +90,7 @@ def newCompany(name, info):
 
 def newApp(uid, position, company, city, state, country, applied, contact, result):
     app = exec_commit_return('INSERT INTO apps (uid, position, companyID, city, state, country, applied, contact, result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING *', (uid, position, company, city, state, country, applied, contact, result))
+    print(app)
     return app
 
 def newMaterials(appID, resume, cv, git, notes, extra, eMaterials):
@@ -93,6 +103,7 @@ def newDates(appID, deadline, applied, recent, finalized):
 
 def newApplication(uid, key, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
     if keyCheck(uid, key) != True:
+        print(uid, key)
         return 'Invalid Key'
     company = newCompany(companyName, companyInfo)
     companyID = company[0]
@@ -100,18 +111,19 @@ def newApplication(uid, key, position, companyName, companyInfo, city, state, co
     applicationID = application[0]
     material = newMaterials(applicationID, resume, cv, git, notes, extra, materials)
     dates = newDates(applicationID, deadline, appliedOn, recentContact, finalized)
+    print('app', application)
     app = getApplication(applicationID, uid, key)
     return app
 
 def signin(username, password):
-    exists = exec_get_one("SELECT * FROM users WHERE username=%s", (username,))
+    exists = exec_get_one("SELECT id, username, hashedpw FROM users WHERE username=%s", (username,))
     if exists == None:
         return 'Username not found'
-    gottenPW = exists[3]
-    if gottenPW == password:
+    gottenPW = exists[2]
+    if gottenPW == hashPW(password):
         key = generateKey(exists[0])
-        return ('Login Successful', key[1])
-    return ("Login Unsuccessful", -1)
+        return [exists[0], exists[1], key[1]]
+    return ("Login Unsuccessful")
 
 def editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extra, materials, applied, contact, result, deadline, appliedOn, recentContact, finalized):
     if keyCheck(uid, key) != True:
@@ -154,21 +166,37 @@ def deleteApplication(key, uid, id):
 
 def generateKey(uid):
     key = secrets.token_hex()
-    generate = exec_commit_return("UPDATE users SET sessionKey=%s WHERE id=%s RETURNING *", (key, uid))
+    # print(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+    generate = exec_commit_return("UPDATE users SET sessionKey=%s, skCreate=%s WHERE id=%s RETURNING *", (key, datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), uid))
+    # print(generate)
     if generate != None:
         return ("Successful Key generation", key)
     return ("Key was not generated successfully", -1)
 
 def keyCheck(uid, key):
-    existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))
+    existKey = exec_get_one('SELECT sessionKey FROM users WHERE id=%s', (uid,))[0]
     # print('existing: ', existKey[0], 'provided: ', key)
-    if existKey[0] == key:
-        return True
+    if existKey == key:
+        if keyLog(uid) == 0:
+            return True
+        return False
     return False
 
 def removeKey(uid):
-    deleteKey = exec_commit_return("UPDATE users SET sessionKey=NULL WHERE id=%s RETURNING sessionKey", (uid,))
+    deleteKey = exec_commit_return("UPDATE users SET sessionKey=null WHERE id=%s RETURNING sessionKey", (uid,))
+    print(deleteKey)
     if deleteKey != None:
         return 'Key removed successfully'
     return "Key was not removed"
-    
+
+def keyLog(uid):
+    usedAt = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    updatedKeyUse = exec_commit_return("UPDATE users SET skUsed=%s WHERE id=%s RETURNING skUsed", (usedAt, uid,))[0]
+    print(updatedKeyUse)
+    if updatedKeyUse == None:
+        return -1
+    return 0
+
+def hashPW(password):
+    hashed = hashlib.sha512(password.encode('utf-8')).hexdigest()
+    return hashed

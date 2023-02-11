@@ -1,0 +1,35 @@
+<p>application works!</p>
+
+<button (click)="logOut()">Log Out</button>
+
+<div *ngIf="application">
+    <button routerLink="/application/{{application.appId}}/edit">Edit</button>
+    <button routerLink="/">Back</button>
+    <button (click)="deleteApp(application.appId)">Delete</button>
+
+    <h1>{{application.position}}, {{application.companyName}}</h1>
+    <h2>{{application.city}}, {{application.state}}, {{application.country}}</h2>
+
+    <p>Notes: {{application.appNotes}}</p>
+
+    <div id="status">
+        <p>Applied yet?: {{application.applied}}</p>
+        <p>In contact/Communicating?: {{application.contact}}</p>
+        <p>Outcome: {{application.result}}</p>
+    </div>
+
+    <div id="materials">
+        <p>Resume: {{application.resume}}</p>
+        <p>Cover letter: {{application.coverletter}}</p>
+        <p>Github: {{application.github}}</p>
+        <p>Supplemental material: {{application.extras}}</p>
+        <p *ngIf="application.materials">       {{application.materials}}</p>
+    </div>
+
+    <div id="dates">
+        <p>Applied on: {{application.appliedOn | date: 'longDate'}}</p>
+        <p>Deadline: {{application.deadline | date: 'longDate'}}</p>
+        <p>Most Recent Communication/Update: {{application.recentCommunication | date: 'longDate'}}</p>
+        <p>Finalized on: {{application.finalizedDate | date: 'longDate'}}</p>
+    </div>
+</div>

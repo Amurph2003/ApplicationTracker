@@ -6,10 +6,9 @@ class Application(Resource):
         key = request.headers.get('key')
         appID = request.headers.get('appID')
         applicationData = getApplication(appID, uid, key)
-        applicationsForUser = {}
         for item in applicationData:
             print(item)
-            applicationsForUser[item[0]] = { 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company ID': item[10], 'Company Name': item[11], 'Company Info': item[12], 'Materials ID': item[13], 'App ID (materials)': item[14], 'Resume': item[15], 'Cover letter': item[16], 'Github': item[17], 'Application Notes': item[18], 'Extra materials?': item[19], 'Extra materials submitted': item[20], 'Dates ID': item[21], 'App ID (dates)': item[22], 'Deadline': str(item[23]), 'Applied On': str(item[24]), 'Recent Communication': str(item[25]), 'Finalized Date': str(item[26]) }        
+            applicationsForUser = {'appId': item[0], 'uid': item[1], 'position': item[2], 'companyName': item[3], 'companyNotes': item[4], 'city': item[5], 'state': item[6], 'country': item[7], 'resume': item[8], 'coverletter': item[9], 'github': item[10], 'appNotes': item[11], 'extras': item[12], 'materials': item[13], 'applied': item[14], 'contact': item[15], 'result': item[16], 'deadline': str(item[17]), 'appliedOn': str(item[18]), 'recentCommunication': str(item[19]), 'finalizedDate': str(item[20])}
         return applicationsForUser
     
     def post(self, uid):
@@ -70,9 +69,8 @@ class Application(Resource):
         print('New Application:', newApplicationData)
         if newApplicationData == None:
             return None
-        newA = {}
-        item = newApplicationData
-        newA[item[0]] = { 'User ID': item[1], 'Position': item[2], 'City': item[3], 'State': item[4], 'Country': item[5], 'Applied': item[6], 'Contact': item[7], 'Result': item[8], 'Company Name': item[9], 'Company Info': item[10],  'Resume': item[11], 'Cover letter': item[12], 'Github': item[13], 'Application Notes': item[14], 'Extra materials?': item[15], 'Extra materials submitted': item[16], 'Deadline': str(item[17]), 'Applied On': str(item[18]), 'Recent Communication': str(item[19]), 'Finalized Date': str(item[20]) }
+        item = newApplicationData[0]
+        newA = {'appId': item[0], 'uid': item[1], 'position': item[2], 'companyName': item[3], 'companyNotes': item[4], 'city': item[5], 'state': item[6], 'country': item[7], 'resume': item[8], 'coverletter': item[9], 'github': item[10], 'appNotes': item[11], 'extras': item[12], 'materials': item[13], 'applied': item[14], 'contact': item[15], 'result': item[16], 'deadline': str(item[17]), 'appliedOn': str(item[18]), 'recentCommunication': str(item[19]), 'finalizedDate': str(item[20])}
         return newA
     
     def put(self, uid):
@@ -130,17 +128,15 @@ class Application(Resource):
         if finalized == '':
             finalized = None
             
-        gottenID = exec_get_one('SELECT id FROM apps WHERE uid=%s AND id=%s', (uid, id))[0]
-        editApplication = ()
-        if gottenID == id:
-            editedApplication = editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)
+        # gottenID = exec_get_one('SELECT id FROM apps WHERE uid=%s AND id=%s', (uid, id))[0]
+        # if gottenID != id:
+        #     return None
+        editedApplication = editApplication(key, uid, id, position, companyName, companyInfo, city, state, country, resume, cv, git, notes, extras, materials, applied, contact, result, deadline, appliedOn, recent, finalized)[0]
         
-        print('Edited Application:', editedApplication)
-        if editedApplication == None:
-            return None
         editA = {}
         item = editedApplication
-        editA[item[0]] = { 'User ID': item[1], 'Position': item[2], 'City': item[3], 'State': item[4], 'Country': item[5], 'Applied': item[6], 'Contact': item[7], 'Result': item[8], 'Company Name': item[9], 'Company Info': item[10],  'Resume': item[11], 'Cover letter': item[12], 'Github': item[13], 'Application Notes': item[14], 'Extra materials?': item[15], 'Extra materials submitted': item[16], 'Deadline': str(item[17]), 'Applied On': str(item[18]), 'Recent Communication': str(item[19]), 'Finalized Date': str(item[20]) }
+        editA = {'appId': item[0], 'uid': item[1], 'position': item[2], 'companyName': item[3], 'companyNotes': item[4], 'city': item[5], 'state': item[6], 'country': item[7], 'resume': item[8], 'coverletter': item[9], 'github': item[10], 'appNotes': item[11], 'extras': item[12], 'materials': item[13], 'applied': item[14], 'contact': item[15], 'result': item[16], 'deadline': str(item[17]), 'appliedOn': str(item[18]), 'recentCommunication': str(item[19]), 'finalizedDate': str(item[20])}
+        
         return editA
     
     def delete(self, uid):
@@ -167,15 +163,50 @@ class Login(Resource):
         pw = args['password']
         result = signin(un, pw)
         print(result)
-        return result[1]
+        return result
+    
+    def put(self):
+        uid = request.headers.get('uid')
+        delKey = removeKey(uid)
+        print(delKey)
+        return delKey
     
 class Overview(Resource):
     def get(self, uid):
         key = request.headers.get('key')
         allApplications = listUsersEverything(uid, key)
-        applicationsForUser = {}
+        applicationsForUser = []
         print(allApplications)
         for item in allApplications:
-            print(item)
-            applicationsForUser[item[0]] = { 'User ID': item[1], 'Position': item[2], 'Company ID': item[3], 'City': item[4], 'State': item[5], 'Country': item[6], 'Applied': item[7], 'Contact': item[8], 'Result': item[9], 'Company ID': item[10], 'Company Name': item[11], 'Company Info': item[12], 'Materials ID': item[13], 'App ID (materials)': item[14], 'Resume': item[15], 'Cover letter': item[16], 'Github': item[17], 'Application Notes': item[18], 'Extra materials?': item[19], 'Extra materials submitted': item[20], 'Dates ID': item[21], 'App ID (dates)': item[22], 'Deadline': str(item[23]), 'Applied On': str(item[24]), 'Recent Communication': str(item[25]), 'Finalized Date': str(item[26]) }        
+            applicationsForUser.append({'appID': item[0], 'uid': item[1], 'position': item[2], 'companyId': item[3], 'city': item[4], 'state': item[5], 'country': item[6], 'applied': item[7], 'contact': item[8], 'result': item[9], 'companyName': item[11], 'companyInfo': item[12], 'resume': item[15], 'coverletter': item[16], 'github': item[17], 'applicationNotes': item[18], 'extraMaterials': item[19], 'materialsSubmitted': item[20],'deadline': str(item[23]), 'appliedOn': str(item[24]), 'recentCommunication': str(item[25]), 'finalizedDate': str(item[26])})
         return applicationsForUser
+    
+class Users(Resource):
+    def get(self, uid):
+        key = request.headers.get('key')
+        result = keyCheck(uid, key)
+        print(result)
+        
+        return result
+        
+class NewUser(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', type=str)
+        parser.add_argument('username', type=str)
+        parser.add_argument('email', type=str)
+        parser.add_argument('password', type=str)
+        parser.add_argument('age', type=int)
+        args = parser.parse_args()
+        
+        name = args['name']
+        un = args['username']
+        email = args['email']
+        pw = args['password']
+        age = args['age']
+        date = datetime.datetime.today()
+        
+        userNew = newUser(name, un, email, pw, date, age)
+        createdUser = { 'id': userNew[0], 'username': userNew[2], 'name': userNew[1], 'email': userNew[4] }
+        
+        return createdUser
