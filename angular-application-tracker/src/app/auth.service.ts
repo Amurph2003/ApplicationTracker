@@ -9,8 +9,8 @@ import { Auth } from './auth';
 })
 export class AuthService {
 
-  private userURL = 'http://100.89.33.109:5001/users/';
-  private newUserURL = 'http://100.89.33.109:5001/user';
+  private userURL = 'http://100.73.1.36:5001/users/';
+  private newUserURL = 'http://100.73.1.36:5001/user';
   private token = 'key';
   private id = 'uid';
 
@@ -49,6 +49,7 @@ export class AuthService {
       console.log(data)
         if (data == true)
           return true;
+        this.router.navigate(['/login']);
         return false
       })
     console.log(rV)

@@ -21,9 +21,7 @@ export class ApplicationComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(!this.authService.isLoggedIn())
-    console.log('he');
-    
-    console.log('hello');
+    this.authService.isLoggedIn();
     this.getApp()
   }
 

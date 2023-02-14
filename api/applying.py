@@ -7,8 +7,16 @@ class Application(Resource):
         appID = request.headers.get('appID')
         applicationData = getApplication(appID, uid, key)
         for item in applicationData:
-            print(item)
             applicationsForUser = {'appId': item[0], 'uid': item[1], 'position': item[2], 'companyName': item[3], 'companyNotes': item[4], 'city': item[5], 'state': item[6], 'country': item[7], 'resume': item[8], 'coverletter': item[9], 'github': item[10], 'appNotes': item[11], 'extras': item[12], 'materials': item[13], 'applied': item[14], 'contact': item[15], 'result': item[16], 'deadline': str(item[17]), 'appliedOn': str(item[18]), 'recentCommunication': str(item[19]), 'finalizedDate': str(item[20])}
+            if applicationsForUser['deadline'] == 'None':
+                applicationsForUser['deadline'] = ''
+            if applicationsForUser['appliedOn'] == 'None':
+                applicationsForUser['appliedOn'] = ''
+            if applicationsForUser['recentCommunication'] == 'None':
+                applicationsForUser['recentCommunication'] = ''
+            if applicationsForUser['finalizedDate'] == 'None':
+                applicationsForUser['finalizedDate'] = ''
+        print(applicationsForUser)
         return applicationsForUser
     
     def post(self, uid):

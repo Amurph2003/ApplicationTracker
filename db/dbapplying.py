@@ -167,7 +167,7 @@ def deleteApplication(key, uid, id):
 def generateKey(uid):
     key = secrets.token_hex()
     # print(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-    generate = exec_commit_return("UPDATE users SET sessionKey=%s, skCreate=%s WHERE id=%s RETURNING *", (key, datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), uid))
+    generate = exec_commit_return("UPDATE users SET sessionKey=%s, skCreate=%s WHERE id=%s RETURNING *", (key, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), uid))
     # print(generate)
     if generate != None:
         return ("Successful Key generation", key)
@@ -190,7 +190,7 @@ def removeKey(uid):
     return "Key was not removed"
 
 def keyLog(uid):
-    usedAt = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    usedAt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     updatedKeyUse = exec_commit_return("UPDATE users SET skUsed=%s WHERE id=%s RETURNING skUsed", (usedAt, uid,))[0]
     print(updatedKeyUse)
     if updatedKeyUse == None:
