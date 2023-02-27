@@ -82,3 +82,17 @@ li {
 .trouble {
     background-color: red;
 }
+
+#materials {
+    float: left;
+    position: relative;
+    top: -350px;
+    left: 400px;
+}
+
+#dates {
+    float: left;
+    position: relative;
+    top: -350px;
+    left: 450px;
+}
