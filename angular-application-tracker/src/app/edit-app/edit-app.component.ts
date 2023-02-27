@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Application } from '../application';
 import { ApplicationService } from '../application.service';
 import { AuthService } from '../auth.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-app',
@@ -17,6 +18,7 @@ export class EditAppComponent implements OnInit{
     private applicationService: ApplicationService,
     private authService: AuthService,
     private router: Router,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -47,9 +49,10 @@ export class EditAppComponent implements OnInit{
     this.applicationService.editApplication(uid, String(app.appId), app.position, app.companyName, app.companyInfo, app.city, app.state, app.country, String(app.resume), String(app.coverletter), String(app.github), app.appNotes, String(app.extras), app.materials, String(app.applied), String(app.contact), String(app.result), app.deadline, app.appliedOn, app.recentCommunication, app.finalizedDate).subscribe(app => {
       console.log(app); 
       this.application = app;
+      this.location.back();
     });
-
-    this.router.navigate(['/application/' + String(this.application!.appId)]);
+    
+    
   }
 
   newApp(pos: string, compN: string, compI: string = '', city: string, state: string, count: string, resume: string, cv: string, git: string, notes: string = '', extras: string, mater: string = '', appli: string, con: string, result: string, dead: string = '', appliedOn: string = '', recent: string = '', fin: string = '') {
@@ -58,7 +61,7 @@ export class EditAppComponent implements OnInit{
     this.applicationService.newApplication(uid, pos, compN, compI, city, state, count, resume, cv, git, notes, extras, mater, appli, con, result, dead, appliedOn, recent, fin).subscribe();
     setTimeout(() => {
       this.router.navigate(['']);
-    }, 250);
+    }, 500);
   }
 
   logOut() {

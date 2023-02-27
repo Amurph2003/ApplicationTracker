@@ -47,8 +47,17 @@ li {
 }
 
 .oTitle {
-    padding-bottom: 15px;
     font-size: 14pt;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.oLocation {
+    padding-bottom: 15px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .oDetail {

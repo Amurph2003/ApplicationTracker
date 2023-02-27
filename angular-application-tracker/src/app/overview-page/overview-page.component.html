@@ -25,7 +25,8 @@
     <ul>
         <li *ngFor="let app of apps" class="app" id="">
             <a routerLink="/application/{{app.appID}}"><div>
-            <p class='oTitle'>{{app.position}} <br>{{app.companyName}}</p>
+            <p class='oTitle'>{{app.position}}</p>
+            <p class='oLocation'>{{app.companyName}}</p>
             <p class='oDetail'>{{app.city}}, {{app.state}}</p>
             <p class="oDetail" *ngIf="app.country != localC">{{app.country}}</p>
             <p class='oDetail'>Deadline: {{app.deadline}}</p>
@@ -33,7 +34,7 @@
             <p class='oDetail'>Latest communication recieved: {{app.recentCommunication}}</p>
             </div></a>
 
-            <button class="deleteButton" (click)="deleteApp(app.appID)">Delete</button>
+            <!-- <button class="deleteButton" (click)="deleteApp(app.appID)">Delete</button> -->
         </li>
     </ul>
 </div>
