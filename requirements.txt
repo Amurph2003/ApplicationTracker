@@ -4,6 +4,8 @@ attrs==19.3.0
 Click==7.0
 colorama==0.4.3
 Flask==2.2.3
+Flask-RESTful
+Flask-Cors
 gunicorn==20.1.0
 importlib-metadata==6.0.0
 itsdangerous==2.1.2
