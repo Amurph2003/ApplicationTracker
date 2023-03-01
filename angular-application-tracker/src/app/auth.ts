@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
     providedIn: 'root',
 })
 export class Auth {
-    private loginURL = 'http://100.73.1.36:5001/login';
+    private loginURL = 'http://54.227.128.252:5001/login';
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
