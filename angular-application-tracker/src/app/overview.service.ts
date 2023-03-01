@@ -9,7 +9,7 @@ import { Overview } from './overview';
 })
 export class OverviewService {
 
-  private overviewURL = 'http://54.227.128.252:5001/overview';
+  private overviewURL = 'https://54.227.128.252:5001/overview';
 
   constructor(
     private http: HttpClient,
