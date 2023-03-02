@@ -1,5 +1,5 @@
-host: 100.73.1.36
-database: test1
-user: root1
-password: example
+host: db.bit.io
+database: Amurph2003/appTracker
+user: appy
+password: v2_3zhAZ_Lj8Nbax84MyWj8avR49a639
 port: 5432
