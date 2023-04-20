@@ -9,7 +9,7 @@ import { Overview } from './overview';
 })
 export class OverviewService {
 
-  private overviewURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/overview/';
+  private overviewURL = 'https://20.163.247.255.nip.io/overview';
 
   constructor(
     private http: HttpClient,

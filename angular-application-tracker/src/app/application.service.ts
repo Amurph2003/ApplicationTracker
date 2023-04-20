@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class ApplicationService {
 
-  private applicationURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/';
+  private applicationURL = 'https://20.163.247.255.nip.io/';
 
   constructor(
     private http: HttpClient,
@@ -24,7 +24,7 @@ export class ApplicationService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'appID': appID, 'key': key })
     };
-    return this.http.get<Application>(this.applicationURL + uid + '/application/', httpOptions);
+    return this.http.get<Application>(this.applicationURL + uid + '/application', httpOptions);
   }
 
   editApplication(uid: string, appID: string, pos: string, compN: string, compI: string, city: string, state: string, count: string, resume: string, cv: string, git: string, notes: string, extras: string, mater: string, appli: string, con: string, result: string, dead: string, appliedOn: string, recent: string, fin: string): Observable<Application> {
@@ -33,7 +33,7 @@ export class ApplicationService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': key })
     };
     var app = { 'id': appID, 'position': pos, 'companyName': compN, 'companyInfo': compI, 'city': city, 'state': state, 'country': count, 'resume': resume, 'cv': cv, 'git': git, 'notes': notes, 'extras': extras, 'materials': mater, 'applied': appli, 'contact': con, 'result': result, 'deadline': dead, 'appliedOn': appliedOn, 'recent': recent, 'finalized': fin };
-    return this.http.put<Application>(this.applicationURL + uid + '/application/', app, httpOptions).pipe(tap((app: Application) => console.log(app)));
+    return this.http.put<Application>(this.applicationURL + uid + '/application', app, httpOptions).pipe(tap((app: Application) => console.log(app)));
   }
 
   newApplication(uid: string, pos: string, compN: string, compI: string, city: string, state: string, count: string, resume: string, cv: string, git: string, notes: string, extras: string, mater: string, appli: string, con: string, result: string, dead: string, appliedOn: string, recent: string, fin: string): Observable<Application> {
@@ -44,7 +44,7 @@ export class ApplicationService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': key })
     };
-    return this.http.post<Application>(this.applicationURL + uid + '/application/' , app, httpOptions).pipe(tap((app: Application) => console.log(app)));
+    return this.http.post<Application>(this.applicationURL + uid + '/application' , app, httpOptions).pipe(tap((app: Application) => console.log(app)));
   }
 
   deleteApplication(uid: string, appId: string): Observable<Application> {
@@ -55,6 +55,6 @@ export class ApplicationService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': key }),
       body: { 'id': appId }
     };
-    return this.http.delete<Application>(this.applicationURL + uid + '/application/', httpOptions).pipe(tap((app: Application) => console.log(app)));
+    return this.http.delete<Application>(this.applicationURL + uid + '/application', httpOptions).pipe(tap((app: Application) => console.log(app)));
   }
 }
