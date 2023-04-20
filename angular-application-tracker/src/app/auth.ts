@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
     providedIn: 'root',
 })
 export class Auth {
-    private loginURL = 'https://application-tracker-k6qs3y8xz-amurph2003.vercel.app/login';
+    private loginURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/login';
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })

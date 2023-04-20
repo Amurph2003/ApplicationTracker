@@ -1,9 +1,15 @@
-<p>login works!</p>
 
-<input id="username" #username>
 
-<input type="password" id="password" #password>
+<div id="loginImage">
+    <img src="../../assets/AppTrackerLogo2.svg" width="300">
+</div>
 
-<button type="button" (click)="login(username.value, password.value)" >Submit</button>
+<div class="userData">
+    <input id="username" placeholder="Username" #username>
+    <input type="password" placeholder="Password" id="password" #password>
+</div>
 
-<button type="button" routerLink="/signup">Click here to sign up</button>
+<div class="loginButtons">
+    <button type="button" (click)="login(username.value, password.value)" >Submit</button>
+    <button type="button" routerLink="/signup">Click here to sign up</button>
+</div>

@@ -1,5 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 
+/*  Universal   */
+
+body {
+    background-color: cornflowerblue;
+}
+
+/*  Login/SignUp Page  */
+
+.userData, .loginButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 35vh;
+}
+
+#loginImage {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding-top: 8vh;
+}
+
+.loginButtons {
+    flex-direction: row;
+    min-height: 1vh;
+}
+
+input {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 ul {
     list-style-type: none;
     display: flex;

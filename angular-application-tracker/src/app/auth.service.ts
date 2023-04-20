@@ -9,8 +9,8 @@ import { Auth } from './auth';
 })
 export class AuthService {
 
-  private userURL = 'http://localhost:5001/users/';
-  private newUserURL = 'http://localhost:5001/user';
+  private userURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/users/';
+  private newUserURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/user';
   private token = 'key';
   private id = 'uid';
 
