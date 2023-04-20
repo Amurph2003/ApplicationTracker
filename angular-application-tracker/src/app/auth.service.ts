@@ -10,7 +10,7 @@ import { Auth } from './auth';
 export class AuthService {
 
   private userURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/users/';
-  private newUserURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/user';
+  private newUserURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/user/';
   private token = 'key';
   private id = 'uid';
 
@@ -44,7 +44,7 @@ export class AuthService {
       return false
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'key': existToken! })};
-    const Logged = this.http.get<boolean>(this.userURL+this.getId(), httpOptions);
+    const Logged = this.http.get<boolean>(this.userURL+this.getId()+'/', httpOptions);
     const rV = Logged.subscribe(data => {
       console.log(data)
         if (data == true)
