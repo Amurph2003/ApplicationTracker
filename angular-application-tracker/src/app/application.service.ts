@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class ApplicationService {
 
-  private applicationURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhLs/';
+  private applicationURL = 'https://vercel.com/amurph2003/application-tracker/GWTcR7ex69aVe8WnAYX15GUvZhL/';
 
   constructor(
     private http: HttpClient,
