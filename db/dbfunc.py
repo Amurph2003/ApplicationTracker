@@ -3,12 +3,12 @@ import yaml
 import os
 
 def connectToServer():
-    # config = {}
-    # yml_pth = os.path.join(os.path.dirname(__file__), '../config/server.yml')
-    # with open(yml_pth, 'r') as file:
-    #     config = yaml.load(file, Loader=yaml.FullLoader)
-    # return psycopg2.connect(dbname=config['database'], user=config['user'], password=config['password'], host=config['host'], port=config['port'])
-    return psycopg2.connect(dbname=os.environ.get('db.database'), user=os.environ.get('db.user'), password=os.environ.get('db.password'), host=os.environ.get('db.host'), port=os.environ.get('db.port'))
+    config = {}
+    yml_pth = os.path.join(os.path.dirname(__file__), '../config/server.yml')
+    with open(yml_pth, 'r') as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+    return psycopg2.connect(dbname=config['database'], user=config['user'], password=config['password'], host=config['host'], port=config['port'])
+    #return psycopg2.connect(dbname=os.environ.get('db.database'), user=os.environ.get('db.user'), password=os.environ.get('db.password'), host=os.environ.get('db.host'), port=os.environ.get('db.port'))
     
 def exec_get_one(sql, args={}):
     conn = connectToServer()

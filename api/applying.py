@@ -169,9 +169,10 @@ class Login(Resource):
 
         un = args['username']
         pw = args['password']
+        print(un)
         result = signin(un, pw)
         print(result)
-        return result
+        return result 
     
     def put(self):
         uid = request.headers.get('uid')
