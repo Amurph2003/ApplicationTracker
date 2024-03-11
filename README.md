@@ -12,6 +12,7 @@ in an Angular application.
 - Auto Sign Out
     - If a user has been inactive for 2-3 hours, user should 
       be signed out to protect user data
+- React.js Front End
 
 # Future Feature Plans
 - Implement file upload and views 
